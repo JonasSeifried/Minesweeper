@@ -3,6 +3,7 @@ package de.htwg.se.minesweeper
   println("Hello world my project is Minesweeper!")
   println(msg)
   print("Test da merge2")
-  "mehr code"
+  "mehr code  "
+  print("bitte jetzt")
 
 def msg = "I was compiled by Scala 3. :)"
