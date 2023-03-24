@@ -1,5 +1,21 @@
 @main def hello: Unit = 
-  println("Hello worldd!")
-  println(msg)
+  val gameName = "Minesweeper"
+  println(s"Welcome to $gameName!")
+  print("Enter your Name: ")
+  val userInput = scala.io.StdIn.readLine()
+  println(s"Hey $userInput lets start!")
 
-def msg = "I was compiled by Scala 3. :)"
+
+  //Generate Minefield
+  generateField_prototype(30, 5)
+  //print to user
+  // wait for user Input
+
+
+
+
+
+def generateField_prototype(width: Int, length: Int) =
+  println("-".repeat(width))
+
+  
