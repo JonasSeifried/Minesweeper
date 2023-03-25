@@ -1,7 +1,7 @@
-## Minesweeper
+# Minesweeper
 
-### Usage
+### This Project was made for the lecture Software Engineering at [Htwg Konstanz](https://www.htwg-konstanz.de/).
+Made in collaboration with [Berrak Uzun](https://github.com/berrakuzun).
 
-This Project was made for lecture Software Engineering at HTWG Konstanz.
-Its a simple Minesweeper clone with TUI and GUI.
+Its a simple **Minesweeper** clone done in [Scala](https://scala-lang.org/).
 
