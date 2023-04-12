@@ -1,18 +1,24 @@
 package de.htwg.se.minesweeper.model
 
-case class TileMatrix(rows: Int, columns: Int) {
-  val matrix = Vector.tabulate(rows, columns)((x,y) => new Tile(x,y))
-  def getTile(x: Int, y: Int) = matrix(x)(y)
+import scala.util.Random
 
-  override def toString(): String =
-    val sb = new StringBuilder()
-    for (i <- 0 until rows) {
-        for (j <- 0 until columns) {
-            sb.append(matrix(i)(j).toString() + " ")
+case class TileMatrix(rows: Vector[Vector[Tile]]):
+    def this(rows: Int, columns: Int) = this(Vector.tabulate(rows, columns)((row, col) => if(Random.nextInt(4) == 0) Tile.Bomb else Tile.Empty))
+    val rowsSize: Int = rows.size
+    val columnsSize: Int = rows(0).size
+
+    def getTile(row: Int, col: Int): Tile = rows(row)(col)
+
+    def replaceTile(row: Int, col: Int, tile: Tile): TileMatrix = copy(rows.updated(row, rows(row).updated(col, tile)))
+
+
+    override def toString: String =
+        val sb = new StringBuilder()
+        for (row <- rows) {
+            for (tile <- row) {
+                sb.append(tile)
+            }
+            sb.append("\n")
         }
-        sb.append("\n")
-    }
-    sb.toString()
-
-}
+        sb.toString
 
