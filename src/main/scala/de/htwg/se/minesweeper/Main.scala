@@ -1,10 +1,11 @@
 package de.htwg.se.minesweeper
 
-import de.htwg.se.minesweeper.model._
+import de.htwg.se.minesweeper.model.{FieldCreator, Field}
 
 @main def main(): Unit =
   println("Hello world my project is Minesweeper!")
 
-  val field = new TileMatrix(15, 15)
+  val emptyField = new Field(15, 15)
+  val field = new FieldCreator().createField(emptyField)
   println(field)
   println(field.toString.length)
