@@ -7,5 +7,4 @@ import de.htwg.se.minesweeper.model.{FieldCreator, Field}
 
   val emptyField = new Field(15, 15)
   val field = new FieldCreator().createField(emptyField)
-  println(field)
-  println(field.toString.length)
+  println(field.showTile(5,5).showTile(10,10).showTile(11,11).flagTile(12,12))
