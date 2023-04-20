@@ -1,10 +1,19 @@
 package de.htwg.se.minesweeper
 
-import de.htwg.se.minesweeper.model.{FieldCreator, Field}
+import de.htwg.se.minesweeper.aview.Tui
+import de.htwg.se.minesweeper.model.{Field, FieldCreator}
+
+import scala.io.StdIn.readLine
 
 @main def main(): Unit =
   println("Hello world my project is Minesweeper!")
+  val tui = new Tui
+  val fieldCreator = new FieldCreator
 
-  val emptyField = new Field(15, 15)
-  val field = new FieldCreator().createField(emptyField)
-  println(field.showTile(5,5).showTile(10,10).showTile(11,11).flagTile(12,12))
+  var field = fieldCreator.createField(new Field(15,15))
+  var input = ""
+
+  while (input != "q")
+    print(field)
+    input = readLine()
+    field = tui.processInput(input, field)

@@ -9,7 +9,7 @@ case class Field(tiles: Matrix[Tile]):
 
     def replaceTile(row: Int, col: Int, tile: Tile): Field = Field(tiles.replaceCell(row, col, tile))
 
-    def showTile(row: Int, col: Int): Field =
+    def openTile(row: Int, col: Int): Field =
         val oldTile = tiles.cell(row, col)
         Field(tiles.replaceCell(row, col, Tile(oldTile.isBomb, false)))
 
