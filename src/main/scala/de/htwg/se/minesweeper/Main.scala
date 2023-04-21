@@ -10,7 +10,7 @@ import scala.io.StdIn.readLine
   val tui = new Tui
   val fieldCreator = new FieldCreator
 
-  var field = fieldCreator.createField(new Field(15,15))
+  var field = fieldCreator.createField(new Field(3,3))
   var input = ""
 
   while (input != "q")

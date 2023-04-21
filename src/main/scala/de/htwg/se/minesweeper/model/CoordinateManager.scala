@@ -5,8 +5,8 @@ class CoordinateManager {
 
   def decrypt(input: String): (Int, Int) =
     input.length match
-      case 2 => (alphaToNum(input(0)), input.substring(1).toInt)
-      case 3 => (alphaToNum(input(0)), input.substring(1).toInt)
+      case 2 => (input.substring(1).toInt, alphaToNum(input(0)))
+      case 3 => (input.substring(1).toInt, alphaToNum(input(0)))
       case _ => (-1, -1)
 
   private def alphaToNum(char: Char): Int =
