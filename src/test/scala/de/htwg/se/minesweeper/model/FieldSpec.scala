@@ -18,7 +18,7 @@ class FieldSpec extends AnyWordSpec {
       }
       "Show Tiles (make them visible)" in {
         val sfield = field3x3.openTile(1,1)
-        sfield.getTile(1,1).toString should be("0")
+        sfield.getTile(1,1).toString should be("0️⃣")
       }
       "Flag tiles" in {
         val ffield = field3x3.flagTile(1, 1)
@@ -26,7 +26,7 @@ class FieldSpec extends AnyWordSpec {
       }
       "print field" in {
         val pfield = new Field(2,2).replaceTile(0,0, Tile(true, false))
-        pfield.toString should be("💣⬜\n⬜⬜\n")
+        pfield.toString should be("0💣⬜\n1⬜⬜\n  a b")
       }
     }
   }

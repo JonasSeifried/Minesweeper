@@ -7,7 +7,8 @@ class Tui {
   private val fieldCreator = new FieldCreator
   def processInput(input: String, field:Field): Field =
     input(0) match
-      case 'r' => fieldCreator.createField(field)
+      case 'r' =>
+        fieldCreator.createField(new Field(field.rowSize, field.colSize))
       case 'o' => openOrFlag(input,true, field)
       case 'f' => openOrFlag(input, false, field)
       case _ => field

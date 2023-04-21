@@ -26,7 +26,7 @@ class TileSpec extends AnyWordSpec {
     "Not Bomb and not Hidden" should {
       val tile = Tile(false, false)
       "Should be a Number as a String" in {
-        tile.toString should be ("0")
+        tile.toString should be ("0️⃣")
       }
     }
   }

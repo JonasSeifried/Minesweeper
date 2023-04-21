@@ -14,6 +14,6 @@ import scala.io.StdIn.readLine
   var input = ""
 
   while (input != "q")
-    print(field)
+    println(field)
     input = readLine()
     field = tui.processInput(input, field)

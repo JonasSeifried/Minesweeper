@@ -3,6 +3,7 @@ package de.htwg.se.minesweeper.model
 import scala.util.Random
 
 case class Field(tiles: Matrix[Tile]):
+    private val chars = ('a' to 'z') ++ ('A' to 'Z')
     def this(sizeX: Int, sizeY: Int) = this(new Matrix[Tile](sizeX, sizeY, Tile(false, true)))
     val rowSize: Int = tiles.rowSize
     val colSize: Int = tiles.colSize
@@ -21,11 +22,14 @@ case class Field(tiles: Matrix[Tile]):
 
     override def toString: String =
         val sb = new StringBuilder()
-        for (row <- tiles.rows) {
+        for ((row, row_idx) <- tiles.rows.zipWithIndex) {
+            sb.append(row_idx)
             for (tile <- row) {
                 sb.append(tile)
             }
             sb.append("\n")
         }
+        sb.append(" ")
+        for i <- 0 until colSize do sb.append(" ").append(chars(i))
         sb.toString
 
