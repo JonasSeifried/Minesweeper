@@ -1,12 +1,16 @@
 package de.htwg.se.minesweeper.aview
 
+import de.htwg.se.minesweeper.controller.Controller
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers._
 import de.htwg.se.minesweeper.model.Field
 
 class TuiSpec extends AnyWordSpec {
-  val tui = new Tui
-  val field = new Field(3,3)
+  val field = new Field(3, 3)
+  val controller = new Controller(field)
+  val tui = new Tui(controller)
+
+
   "A TUI" when {
     "input starts with r" should {
       "renew the field" in {
