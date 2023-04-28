@@ -6,15 +6,15 @@ import org.scalatest.matchers.should.Matchers._
 import de.htwg.se.minesweeper.model.Field
 
 class TuiSpec extends AnyWordSpec {
-  val field = new Field(3, 3).openTile(0,0)
-  val controller = new Controller(field)
+  val field: Field = new Field(3, 3).openTile(0,0)
+  val controller: Controller = Controller(field)
   val tui = new Tui(controller)
 
   "A TUI" when {
     "with difference inputs" should {
       "renew the field" in {
         tui.processInput("r ")
-        controller.field should not be(field)
+        controller.field should not be field
       }
     }
     "input starts with nothing" in {
@@ -37,6 +37,9 @@ class TuiSpec extends AnyWordSpec {
       }
       "input q" in {
           tui.processInput("q") should be(false)
+      }
+      "input h" in {
+        tui.processInput("h ") should be(false)
       }
     }
     "input starts with anything else" in {
