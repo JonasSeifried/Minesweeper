@@ -14,5 +14,7 @@ case class Controller(var field: Field) extends Observable:
     notifyObservers()
 
 
-  def renewField : Field = fieldCreator.createField(new Field(field.rowSize, field.colSize))
+  def renewField : Field =
+    field = fieldCreator.createField(new Field(field.rowSize, field.colSize))
+    field
   override def toString: String = field.toString
