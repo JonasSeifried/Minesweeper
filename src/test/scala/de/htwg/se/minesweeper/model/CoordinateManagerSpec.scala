@@ -1,7 +1,8 @@
 package de.htwg.se.minesweeper.model
 
+import de.htwg.se.minesweeper.util.CoordinateManager
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers._
+import org.scalatest.matchers.should.Matchers.*
 
 class CoordinateManagerSpec extends AnyWordSpec {
   val coordinateManager = new CoordinateManager

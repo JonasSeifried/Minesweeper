@@ -1,28 +1,66 @@
-package de.htwg.se.minesweeper.aview
+package de.htwg.se.minesweeper
+package aview
 
-import de.htwg.se.minesweeper.model.{CoordinateManager, Field, FieldCreator}
+import util.Observer
+import controller.Controller
+import util.CoordinateManager
 
-class Tui {
+import scala.annotation.tailrec
+
+class Tui(controller: Controller) extends Observer{
   private val coordManager = new CoordinateManager
-  private val fieldCreator = new FieldCreator
-  def processInput(input: String, field:Field): Field =
-    input(0) match
-      case 'r' =>
-        fieldCreator.createField(new Field(field.rowSize, field.colSize))
-      case 'o' => openOrFlag(input,true, field)
-      case 'f' => openOrFlag(input, false, field)
-      case _ => field
+  controller.add(this)
 
-  private def openOrFlag(input: String, open: Boolean, field: Field): Field =
-    if (input.length < 4 || input.length > 5 ) field
+  override def update(): Unit = println("notified")
+
+  def run(): Unit =
+    println(controller)
+    inputLoop()
+
+  @tailrec
+  private def inputLoop(): Unit =
+    val input = scala.io.StdIn.readLine
+    if(processInput(input))
+      println(controller)
+    if(input.isEmpty || input(0) !='q') inputLoop()
+
+  def processInput(input: String): Boolean =
+    if(input.isEmpty) false
+    else
+      input(0) match
+        case 'r' =>
+          controller.renewField
+          true
+        case 'o' =>
+          if(openOrFlag(input,true)) true
+          else
+            println("Wrong usage of the open command")
+            false
+        case 'f' =>
+          if(openOrFlag(input, false)) true
+          else
+            println("Wrong usage of the flag command")
+            false
+        case 'q' =>
+          println("Thanks for playing!")
+          false
+        case _ =>
+          println("Unknown command")
+          false
+
+  private def openOrFlag(input: String, open: Boolean): Boolean =
+    if (input.length < 4 || input.length > 5 ) false
     else
       val coords = coordManager.decrypt(input.substring(2))
-      if (notInBound(coords, field)) field
+      if (notInBound(coords)) false
       else if (open)
-        field.openTile(coords(0), coords(1))
-      else field.flagTile(coords(0), coords(1))
+        controller.openTile(coords(0), coords(1))
+        true
+      else
+        controller.flagTile(coords(0), coords(1))
+        true
 
-  private def notInBound(coords: (Int, Int), field: Field): Boolean =
-    coords(0) >= field.rowSize || coords(0) < 0 || coords(1) >= field.colSize || coords(1) < 0 || !field.getTile(coords(0), coords(1)).isHidden
+  private def notInBound(coords: (Int, Int)): Boolean =
+    coords(0) >= controller.getRowSize || coords(0) < 0 || coords(1) >= controller.getColSize || coords(1) < 0 || !controller.getTileIsHidden(coords(0), coords(1))
 
 }

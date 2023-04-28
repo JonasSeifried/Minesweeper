@@ -1,4 +1,4 @@
-package de.htwg.se.minesweeper.model
+package de.htwg.se.minesweeper.util
 
 class CoordinateManager {
   private val chars = ('a' to 'z') ++ ('A' to 'Z')
