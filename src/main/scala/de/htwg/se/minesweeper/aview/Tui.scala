@@ -44,6 +44,9 @@ class Tui(controller: Controller) extends Observer{
         case 'q' =>
           println("Thanks for playing!")
           false
+        case 'h' =>
+          println(helpText)
+          false
         case _ =>
           println("Unknown command")
           false
@@ -63,4 +66,15 @@ class Tui(controller: Controller) extends Observer{
   private def notInBound(coords: (Int, Int)): Boolean =
     coords(0) >= controller.getRowSize || coords(0) < 0 || coords(1) >= controller.getColSize || coords(1) < 0 || !controller.getTileIsHidden(coords(0), coords(1))
 
+  private val helpText =
+    """
+      |Minesweeper man
+      |-----------------------------------------
+      |h              - Opens Minesweeper man
+      |o [a-z0-99]    - Open a Tile
+      |f [a-z0-99]    - Flag a Tile
+      |r              - Restart with a new Field
+      |q              - Quit the game
+      |-----------------------------------------
+      |""".stripMargin
 }
