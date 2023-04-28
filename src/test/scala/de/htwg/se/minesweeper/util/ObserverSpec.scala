@@ -1,50 +1,46 @@
-package de.htwg.se.minesweeper
-package util
+package de.htwg.se.minesweeper.util
 
-import controller.Controller
-import model.Field
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class ObserverSpec extends AnyWordSpec with Matchers {
-
   class TestObserver extends Observer {
-    var notified = false
-    override def update(): Unit = notified = true
+    var updated = false
+
+    override def update(): Unit = updated = true
   }
 
-  "An Observable" when {
-    val controller = Controller(new Field(5,5))
-    val observer1 = new TestObserver
-    val observer2 = new TestObserver
-    "new" should {
-      "have no subscribers" in {
-        controller.subscribers should be(Vector())
-      }
+  class TestObservable extends Observable {
+    def triggerUpdate(): Unit = notifyObservers()
+  }
 
-      "be able to add subscribers" in {
+  "An Observable" should {
+    "notify all subscribed observers" in {
+      val observable = new TestObservable
+      val observer1 = new TestObserver
+      val observer2 = new TestObserver
 
+      observable.add(observer1)
+      observable.add(observer2)
 
-        controller.add(observer1)
-        controller.add(observer2)
+      observable.triggerUpdate()
 
-        controller.subscribers should be(Vector(observer1, observer2))
-      }
+      observer1.updated should be(true)
+      observer2.updated should be(true)
+    }
+    "not notify unsubscribed observers" in {
+      val observable = new TestObservable
+      val observer1 = new TestObserver
+      val observer2 = new TestObserver
 
-      "be able to remove subscribers" in {
-        controller.remove(observer1)
+      observable.add(observer1)
+      observable.add(observer2)
+      observable.remove(observer1)
 
-        controller.subscribers should be(Vector(observer2))
-      }
+      observable.triggerUpdate()
 
-      "be able to notify subscribers" in {
-        controller.add(observer1)
-
-        controller.notifyObservers()
-
-        observer1.notified should be(true)
-        observer2.notified should be(true)
-      }
+      observer1.updated should be(false)
+      observer2.updated should be(true)
     }
   }
 }
