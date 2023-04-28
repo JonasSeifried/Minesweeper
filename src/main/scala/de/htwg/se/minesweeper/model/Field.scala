@@ -33,3 +33,4 @@ case class Field(tiles: Matrix[Tile]):
         for i <- 0 until colSize do sb.append(" ").append(chars(i))
         sb.toString
 
+

@@ -1,9 +1,9 @@
 package de.htwg.se.minesweeper
 package aview
 
-import model.{CoordinateManager, Field, FieldCreator}
 import util.Observer
 import controller.Controller
+import util.CoordinateManager
 
 import scala.annotation.tailrec
 
@@ -20,11 +20,11 @@ class Tui(controller: Controller) extends Observer{
   @tailrec
   private def inputLoop(): Unit =
     val input = scala.io.StdIn.readLine
-    if(processInput(input, controller.field))
+    if(processInput(input))
       println(controller)
-    if(input.isEmpty || input(0) !='p') inputLoop()
+    if(input.isEmpty || input(0) !='q') inputLoop()
 
-  def processInput(input: String, field:Field): Boolean =
+  def processInput(input: String): Boolean =
     if(input.isEmpty) false
     else
       input(0) match
@@ -32,27 +32,27 @@ class Tui(controller: Controller) extends Observer{
           controller.renewField
           true
         case 'o' =>
-          if(openOrFlag(input,true, field)) true
+          if(openOrFlag(input,true)) true
           else
             println("Wrong usage of the open command")
             false
         case 'f' =>
-          if(openOrFlag(input, false, field)) true
+          if(openOrFlag(input, false)) true
           else
             println("Wrong usage of the flag command")
             false
-        case 'p' =>
+        case 'q' =>
           println("Thanks for playing!")
           false
         case _ =>
           println("Unknown command")
           false
 
-  private def openOrFlag(input: String, open: Boolean, field: Field): Boolean =
+  private def openOrFlag(input: String, open: Boolean): Boolean =
     if (input.length < 4 || input.length > 5 ) false
     else
       val coords = coordManager.decrypt(input.substring(2))
-      if (notInBound(coords, field)) false
+      if (notInBound(coords)) false
       else if (open)
         controller.openTile(coords(0), coords(1))
         true
@@ -60,7 +60,7 @@ class Tui(controller: Controller) extends Observer{
         controller.flagTile(coords(0), coords(1))
         true
 
-  private def notInBound(coords: (Int, Int), field: Field): Boolean =
-    coords(0) >= field.rowSize || coords(0) < 0 || coords(1) >= field.colSize || coords(1) < 0 || !field.getTile(coords(0), coords(1)).isHidden
+  private def notInBound(coords: (Int, Int)): Boolean =
+    coords(0) >= controller.getRowSize || coords(0) < 0 || coords(1) >= controller.getColSize || coords(1) < 0 || !controller.getTileIsHidden(coords(0), coords(1))
 
 }

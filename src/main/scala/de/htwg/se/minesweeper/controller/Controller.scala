@@ -13,6 +13,10 @@ case class Controller(var field: Field) extends Observable:
     field = field.flagTile(x, y)
     notifyObservers()
 
+  def getColSize = field.colSize
+  def getRowSize = field.rowSize
+
+  def getTileIsHidden(x: Int, y: Int) = field.getTile(x, y).isHidden
 
   def renewField : Field =
     field = fieldCreator.createField(new Field(field.rowSize, field.colSize))

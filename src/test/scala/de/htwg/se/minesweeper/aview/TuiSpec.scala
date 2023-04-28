@@ -6,52 +6,41 @@ import org.scalatest.matchers.should.Matchers._
 import de.htwg.se.minesweeper.model.Field
 
 class TuiSpec extends AnyWordSpec {
-  val field = new Field(3, 3)
+  val field = new Field(3, 3).openTile(0,0)
   val controller = new Controller(field)
   val tui = new Tui(controller)
 
   "A TUI" when {
     "with difference inputs" should {
       "renew the field" in {
-        val newField = tui.processInput("p", field)
-        newField should not be(field)
+        tui.processInput("r ")
+        controller.field should not be(field)
       }
     }
     "input starts with nothing" in {
-      val newField = tui.processInput("", field)
-      newField should be(false)
+      tui.processInput("") should be(false)
     }
     "input starts with o and valid input" in {
-      val newField = tui.processInput("o", field)
-      val newField1 = tui.processInput("o a2", field)
-      newField should be(false)
-      newField1 should be(true)
+      tui.processInput("o") should be(false)
+      tui.processInput("o a2") should be(true)
     }
     "input starts with f and valid input" in {
-      val newField = tui.processInput("f", field)
-      newField should be(false)
+        tui.processInput("f a1") should be(true)
     }
     "input starts with o or a and bad input" should {
       "input < 4 or input > 5" in {
-        val newField = tui.processInput("f", field)
-        val newField1 = tui.processInput("f a2", field)
-        val newField2 = tui.processInput("f x2", field)
-        newField should be(false)
-        newField1 should be(true)
+        tui.processInput("f") should be(false)
+        tui.processInput("f a244") should be(false)
       }
       "input with out of bounds coords" in {
-        val newField = tui.processInput("o", field)
-        newField should be(false)
+          tui.processInput("o d0") should be(false)
       }
-      "input r" in {
-        val newField = tui.processInput("r", field)
-        newField should be(true)
+      "input q" in {
+          tui.processInput("q") should be(false)
       }
     }
     "input starts with anything else" in {
-      val field = new Field(3, 3)
-      val newField = tui.processInput("csad", field)
-      newField should be(false)
+        tui.processInput("csad") should be(false)
     }
   }
 }
