@@ -55,16 +55,10 @@ class Tui(controller: Controller) extends Observer{
     if (input.length < 4 || input.length > 5 ) false
     else
       val coords = coordManager.decrypt(input.substring(2))
-      if (notInBound(coords)) false
-      else if (open)
+      if (open)
         controller.openTile(coords(0), coords(1))
-        true
       else
         controller.flagTile(coords(0), coords(1))
-        true
-
-  private def notInBound(coords: (Int, Int)): Boolean =
-    coords(0) >= controller.getRowSize || coords(0) < 0 || coords(1) >= controller.getColSize || coords(1) < 0 || !controller.getTileIsHidden(coords(0), coords(1))
 
   private val helpText =
     """
