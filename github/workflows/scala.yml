@@ -4,11 +4,13 @@ on:
     branches:
       - main
       - developer
+      - add-actions
 
   pull_request:
     branches:
       - main
       - developer
+      - add-actions
 
 jobs:
   build:
