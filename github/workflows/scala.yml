@@ -21,6 +21,8 @@ jobs:
       - name: Coverage Report
         run: sbt coverageReport
 
-      - name: Check out code
         uses: actions/checkout@v2
+
+      - name: Coveralls GitHub Action
+        uses: coverallsapp/github-action@v2.0.0
 
