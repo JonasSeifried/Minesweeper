@@ -13,16 +13,17 @@ class Tui(controller: Controller) extends Observer{
 
   override def update(): Unit = println("notified")
 
-  def run(): Unit =
+  def run(): Boolean =
     println(controller)
-    inputLoop()
+    if (inputLoop()) true
+    else false
 
-  @tailrec
-  private def inputLoop(): Unit =
+  private def inputLoop(): Boolean =
     val input = scala.io.StdIn.readLine
     if(processInput(input))
       println(controller)
-    if(input.isEmpty || input(0) !='q') inputLoop()
+    if(input.isEmpty || input(0) !='q') return inputLoop()
+    true
 
   def processInput(input: String): Boolean =
     if(input.isEmpty) false

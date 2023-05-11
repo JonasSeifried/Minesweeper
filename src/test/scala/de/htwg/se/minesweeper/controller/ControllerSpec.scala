@@ -20,6 +20,19 @@ class ControllerSpec extends AnyWordSpec with Matchers {
       "printed the Field with the toString-Methode" in {
         controller.toString should be(field.toString)
       }
+      "get if Tile is hidden" in {
+        controller.openTile(0,0)
+        controller.getTileIsHidden(0,0) should be (false)
+      }
+      "get if a Tile is a Bomb" in {
+        controller.field = controller.field.replaceTile(0,0, Tile(true, 0, false, false))
+        controller.getTileIsBomb(0,0) should be (true)
+      }
+      "get a Tile" should {
+        "if out of bounds return null" in {
+          controller.getTile(100,100) should be(null)
+        }
+      }
     }
   }
 }
