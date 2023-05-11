@@ -12,4 +12,4 @@ import scala.io.StdIn.readLine
   val controller = Controller(fieldCreator.createField(new Field(5,5)))
   val tui = Tui(controller)
   tui.run()
-
+  println("test")
