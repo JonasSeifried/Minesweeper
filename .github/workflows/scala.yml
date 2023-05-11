@@ -1,0 +1,42 @@
+name: Scala CI
+
+on:
+  push:
+    branches:
+      - main
+      - developer
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  compile:
+    name: Compile
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-java@v3
+      with:
+        java-version: '18'
+        distribution: 'corretto'
+        cache: 'sbt'
+    - run: sbt compile
+  test-coverage:
+    name: Test
+    
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '18'
+          distribution: 'corretto'
+          cache: 'sbt'
+      - name: Run Tests
+        run: sbt clean coverage test
+      - name: Upload Coverage Report
+        env:
+            COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        run: sbt coverageReport coveralls
+        
