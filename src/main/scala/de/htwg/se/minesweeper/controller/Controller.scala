@@ -19,7 +19,7 @@ case class Controller(var field: Field) extends Observable:
       notifyObservers()
       true
 
-  private def getTile(row: Int, col: Int): Tile =
+  def getTile(row: Int, col: Int): Tile =
     if(isOutOfBounds(row,col)) null
     else field.getTile(row, col)
 
@@ -31,6 +31,6 @@ case class Controller(var field: Field) extends Observable:
     field = fieldCreator.createField(new Field(field.rowSize, field.colSize))
     field
   private def isOutOfBounds(coords: (Int, Int)): Boolean =
-    coords(0) >= getRowSize || coords(0) < 0 || coords(1) >= getColSize || coords(1) < 0 || !field.getTile(coords(0), coords(1)).isHidden
+    coords(0) >= getRowSize || coords(0) < 0 || coords(1) >= getColSize || coords(1) < 0
 
   override def toString: String = field.toString

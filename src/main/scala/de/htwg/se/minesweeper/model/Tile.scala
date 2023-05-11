@@ -15,7 +15,6 @@ case class Tile(isBomb: Boolean, bombCount: Int, isHidden: Boolean, isFlagged: B
             case 6 => "6️⃣"
             case 7 => "7️⃣"
             case 8 => "8️⃣"
-            case 9 => "9️⃣"
 
     override def toString: String =
         if(isHidden) if(isFlagged) "🚩" else "⬜"
