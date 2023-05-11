@@ -18,10 +18,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         newField.colSize should be(field.colSize)
       }
       "printed the Field with the toString-Methode" in {
-        val controllerfield = controller.toString
-        val fieldtoString = field.toString
-
-        controllerfield should be(fieldtoString)
+        controller.toString should be(field.toString)
       }
     }
   }
