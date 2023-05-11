@@ -4,7 +4,7 @@ import scala.util.Random
 
 case class Field(tiles: Matrix[Tile]):
     private val chars = ('a' to 'z') ++ ('A' to 'Z')
-    def this(sizeX: Int, sizeY: Int) = this(new Matrix[Tile](sizeX, sizeY, Tile(false, true)))
+    def this(sizeX: Int, sizeY: Int) = this(new Matrix[Tile](sizeX, sizeY, Tile(false, 0, true, false)))
     val rowSize: Int = tiles.rowSize
     val colSize: Int = tiles.colSize
 
@@ -12,11 +12,11 @@ case class Field(tiles: Matrix[Tile]):
 
     def openTile(row: Int, col: Int): Field =
         val oldTile = tiles.cell(row, col)
-        Field(tiles.replaceCell(row, col, Tile(oldTile.isBomb, false)))
+        Field(tiles.replaceCell(row, col, Tile(oldTile.isBomb, oldTile.bombCount, false, false)))
 
     def flagTile(row: Int, col: Int): Field =
         val oldTile = tiles.cell(row, col)
-        Field(tiles.replaceCell(row, col, Tile(oldTile.isBomb, oldTile.isHidden, true)))
+        Field(tiles.replaceCell(row, col, Tile(oldTile.isBomb, oldTile.bombCount, oldTile.isHidden, true)))
 
     def getTile(row: Int, col: Int): Tile = tiles.cell(row, col)
 

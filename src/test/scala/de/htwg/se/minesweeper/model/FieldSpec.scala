@@ -12,7 +12,7 @@ class FieldSpec extends AnyWordSpec {
         field3x3.rowSize should be(3)
       }
       "replace Tiles and return new field" in {
-        val replacedField = field3x3.replaceTile(1,1, Tile(true, false))
+        val replacedField = field3x3.replaceTile(1,1, Tile(true, 0, false, false))
         field3x3.getTile(1,1).toString should be("⬜")
         replacedField.getTile(1,1).toString should be("💣")
       }
@@ -25,7 +25,7 @@ class FieldSpec extends AnyWordSpec {
         ffield.getTile(1, 1).toString should be("🚩")
       }
       "print field" in {
-        val pfield = new Field(2,2).replaceTile(0,0, Tile(true, false))
+        val pfield = new Field(2,2).replaceTile(0,0, Tile(true, 0, false, false))
         pfield.toString should be("0💣⬜\n1⬜⬜\n  a b")
       }
     }
