@@ -1,14 +1,12 @@
-package de.htwg.se.minesweeper.model
-
-import scala.util.Random
-
-case class Field(tiles: Matrix[Tile]) {
+case class Field(tiles: Matrix[Tile], difficulty: Difficulty) {
     private val chars = ('a' to 'z') ++ ('A' to 'Z')
-
-    def this(sizeX: Int, sizeY: Int) = this(new Matrix[Tile](sizeX, sizeY, Tile(false, 0, true, false)))
-
     val rowSize: Int = tiles.rowSize
     val colSize: Int = tiles.colSize
+
+    def this(sizeX: Int, sizeY: Int, difficulty: Difficulty) = {
+        this(new Matrix[Tile](sizeX, sizeY, Tile(false, 0, true, false)), difficulty)
+        generateBombs()
+    }
 
     def replaceTile(row: Int, col: Int, tile: Tile): Field = Field(tiles.replaceCell(row, col, tile))
 
@@ -17,10 +15,10 @@ case class Field(tiles: Matrix[Tile]) {
         if (oldTile.isHidden && !oldTile.isFlagged) {
             val newTiles = tiles.replaceCell(row, col, Tile(oldTile.isBomb, oldTile.bombCount, false, false))
             if (oldTile.isBomb) {
-                Field(newTiles)
+                Field(newTiles, difficulty)
             } else {
                 val updatedField = updateEmptyTiles(row, col, newTiles)
-                Field(updatedField)
+                Field(updatedField, difficulty)
             }
         } else {
             this
@@ -31,7 +29,7 @@ case class Field(tiles: Matrix[Tile]) {
         val oldTile = tiles.cell(row, col)
         if (oldTile.isHidden) {
             val newTile = Tile(oldTile.isBomb, oldTile.bombCount, oldTile.isHidden, !oldTile.isFlagged)
-            Field(tiles.replaceCell(row, col, newTile))
+            Field(tiles.replaceCell(row, col, newTile), difficulty)
         } else {
             this
         }
@@ -44,6 +42,19 @@ case class Field(tiles: Matrix[Tile]) {
     def isGameEnd: Boolean = tiles.rows.flatten.exists(tile => tile.isBomb && !tile.isHidden)
 
     def hasWon: Boolean = !isGameEnd && getUnopenedTiles == 0
+
+    private def generateBombs(): Unit = {
+        val random = new Random()
+        for {
+            row <- 0 until rowSize
+            col <- 0 until colSize
+        } {
+            if (random.nextDouble() < difficulty.getBombProbability) {
+                val tile = tiles.cell(row, col)
+                tiles.replaceCell(row, col, Tile(isBomb = true, tile.bombCount, tile.isHidden, tile.isFlagged))
+            }
+        }
+    }
 
     private def updateEmptyTiles(row: Int, col: Int, field: Matrix[Tile]): Matrix[Tile] = {
         if (row < 0 || row >= rowSize || col < 0 || col >= colSize) {
@@ -76,4 +87,3 @@ case class Field(tiles: Matrix[Tile]) {
         sb.toString()
     }
 }
-
