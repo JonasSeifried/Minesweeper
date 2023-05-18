@@ -43,10 +43,6 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializab
 
     def getCountOfUnopenedTiles: Int = tiles.rows.flatten.count(tile => tile.isHidden && !tile.isFlagged)
 
-    def isGameEnd: Boolean = tiles.rows.flatten.exists(tile => tile.isBomb && !tile.isHidden)
-
-    def hasWon: Boolean = !isGameEnd && getCountOfUnopenedTiles == 0
-
     private def generateBombs(): Unit = {
         val random = new Random()
         for {
