@@ -4,15 +4,13 @@ package controller
 import util.{Observable, PostGameState, PreGameState, State}
 import model.{Field, FieldCreator, Tile}
 
-case class Controller(var field: Field) extends Observable {
+case class Controller(var field: Field, difficulty: Difficulty) extends Observable {
   private val fieldCreator = new FieldCreator
-  var state: State = new PreGameState(this)
 
   def openTile(x: Int, y: Int): Boolean =
     if (isOutOfBounds(x, y)) false
     else {
       field = field.openTile(x, y)
-      if(gameWon || gameOver) state = PostGameState(this)
       notifyObservers()
       true
     }
@@ -21,7 +19,6 @@ case class Controller(var field: Field) extends Observable {
     if (isOutOfBounds(x, y)) false
     else {
       field = field.flagTile(x, y)
-      if(gameWon) state = PostGameState(this)
       notifyObservers()
       true
     }
@@ -36,7 +33,7 @@ case class Controller(var field: Field) extends Observable {
 
   def getTileIsHidden(row: Int, col: Int): Boolean = getTile(row, col).isHidden
 
-  def getTileIsBomb(row: Int, col: Int) : Boolean = getTile(row, col).isBomb
+  def getTileIsBomb(row: Int, col: Int): Boolean = getTile(row, col).isBomb
 
   def getUnopenedTiles: Int = field.getCountOfUnopenedTiles
 
@@ -50,8 +47,8 @@ case class Controller(var field: Field) extends Observable {
 
   def isPostGameState: Boolean = state.isPostGameState
 
-  def renewField: Field = {
-    field = fieldCreator.createField(new Field(field.rowSize, field.colSize))
+  def renewField(): Field = {
+    field = fieldCreator.createField(new Field(field.rowSize, field.colSize, difficulty))
     notifyObservers()
     field
   }
