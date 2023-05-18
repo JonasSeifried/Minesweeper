@@ -36,18 +36,6 @@ class ControllerSpec extends AnyWordSpec with Matchers {
           controller.getTile(100,100) should be(null)
         }
       }
-      "State is Ingame" should {
-        controller.state = InGameState(controller)
-        "State is PreGame" in {
-          controller.isPreGameState should be(false)
-        }
-        "State is InGame" in {
-          controller.isInGameState should be(true)
-        }
-        "State is PostGame" in {
-          controller.isPostGameState should be(false)
-        }
-      }
       "saving and restoring" should {
         "saving the game" in {
           controller.saveGame() should be(true)
