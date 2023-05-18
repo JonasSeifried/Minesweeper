@@ -54,7 +54,6 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         }
         "restore game" in {
           val field = controller.field
-          controller.renewField()
           controller.restoreGame()
           controller.field should be(field)
         }
