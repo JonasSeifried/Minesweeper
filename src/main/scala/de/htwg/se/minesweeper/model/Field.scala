@@ -18,9 +18,11 @@ case class Field(tiles: Matrix[Tile]) {
             val newTiles = tiles.replaceCell(row, col, Tile(oldTile.isBomb, oldTile.bombCount, false, false))
             if (oldTile.isBomb) {
                 Field(newTiles)
-            } else {
-                val updatedField = updateEmptyTiles(row, col, newTiles)
-                Field(updatedField)
+            }
+            else {
+                //val updatedField = updateEmptyTiles(row, col, newTiles)
+                //Field(updatedField)
+                Field(newTiles)
             }
         } else {
             this
@@ -39,11 +41,7 @@ case class Field(tiles: Matrix[Tile]) {
 
     def getTile(row: Int, col: Int): Tile = tiles.cell(row, col)
 
-    def getUnopenedTiles: Int = tiles.rows.flatten.count(tile => tile.isHidden && !tile.isFlagged)
-
-    def isGameEnd: Boolean = tiles.rows.flatten.exists(tile => tile.isBomb && !tile.isHidden)
-
-    def hasWon: Boolean = !isGameEnd && getUnopenedTiles == 0
+    def getCountOfUnopenedTiles: Int = tiles.rows.flatten.count(tile => tile.isHidden && !tile.isFlagged)
 
     private def updateEmptyTiles(row: Int, col: Int, field: Matrix[Tile]): Matrix[Tile] = {
         if (row < 0 || row >= rowSize || col < 0 || col >= colSize) {

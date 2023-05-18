@@ -1,9 +1,8 @@
 package de.htwg.se.minesweeper
 package aview
 
-import util.Observer
+import util.{CoordinateManager, InGameState, Observer}
 import controller.Controller
-import util.CoordinateManager
 
 import scala.annotation.tailrec
 
@@ -13,22 +12,23 @@ class Tui(controller: Controller) extends Observer {
 
   override def update(): Unit = {
     println("Anzahl unentdeckter Felder: " + controller.getUnopenedTiles)
-    if (controller.isGameEnd) {
-      if (controller.hasWon) {
-        println("Spiel gewonnen!")
-      } else {
-        println("Spiel verloren!")
-      }
-    }
+    if(controller.isPostGameState)
+      println(controller)
+      if (controller.gameWon) println("Spiel gewonnen!")
+      else if (controller.gameOver) println("Spiel verloren!")
+
   }
 
   def run(): Boolean =
+    controller.state = InGameState(controller)
+    println(controller)
     if (inputLoop()) true
     else false
 
   private def inputLoop(): Boolean = {
     val input = scala.io.StdIn.readLine
     if (processInput(input)) {
+      if(controller.isPostGameState) return false
       println(controller)
     }
     if (input.isEmpty || input(0) != 'q') return inputLoop()
