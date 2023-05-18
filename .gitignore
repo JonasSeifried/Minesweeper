@@ -35,6 +35,3 @@ metals.sbt
 # Metal
 null
 .metals
-
-#Game Save File
-gameData*
