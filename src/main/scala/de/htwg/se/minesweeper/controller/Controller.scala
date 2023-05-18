@@ -1,10 +1,9 @@
-package de.htwg.se.minesweeper
-package controller
+package de.htwg.se.minesweeper.controller
 
-import util.Observable
-import model.{Field, FieldCreator, Tile}
+import de.htwg.se.minesweeper.util.Observable
+import de.htwg.se.minesweeper.model.{Difficulty, Field, FieldCreator, Tile}
 
-case class Controller(var field: Field) extends Observable {
+case class Controller(var field: Field, difficulty: Difficulty) extends Observable {
   private val fieldCreator = new FieldCreator
 
   def openTile(x: Int, y: Int): Boolean =
@@ -33,7 +32,7 @@ case class Controller(var field: Field) extends Observable {
 
   def getTileIsHidden(row: Int, col: Int): Boolean = getTile(row, col).isHidden
 
-  def getTileIsBomb(row: Int, col: Int) : Boolean = getTile(row, col).isBomb
+  def getTileIsBomb(row: Int, col: Int): Boolean = getTile(row, col).isBomb
 
   def getUnopenedTiles: Int = field.getUnopenedTiles
 
@@ -41,8 +40,8 @@ case class Controller(var field: Field) extends Observable {
 
   def hasWon: Boolean = field.hasWon
 
-  def renewField: Field = {
-    field = fieldCreator.createField(new Field(field.rowSize, field.colSize))
+  def renewField(): Field = {
+    field = fieldCreator.createField(new Field(field.rowSize, field.colSize, difficulty))
     notifyObservers()
     field
   }
@@ -52,4 +51,3 @@ case class Controller(var field: Field) extends Observable {
 
   override def toString: String = field.toString
 }
-

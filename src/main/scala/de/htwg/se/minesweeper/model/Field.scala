@@ -12,7 +12,7 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) {
         generateBombs()
     }
 
-    def replaceTile(row: Int, col: Int, tile: Tile): Field = Field(tiles.replaceCell(row, col, tile))
+    def replaceTile(row: Int, col: Int, tile: Tile): Field = Field(tiles.replaceCell(row, col, tile), difficulty)
 
     def openTile(row: Int, col: Int): Field = {
         val oldTile = tiles.cell(row, col)
@@ -21,7 +21,7 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) {
             if (oldTile.isBomb) {
                 Field(newTiles, difficulty)
             } else {
-                val updatedField = updateEmptyTiles(row, col, newTiles)
+                val updatedField = updateEmptyTiles(row, col, newTiles, Set.empty)
                 Field(updatedField, difficulty)
             }
         } else {
@@ -60,8 +60,8 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) {
         }
     }
 
-    private def updateEmptyTiles(row: Int, col: Int, field: Matrix[Tile]): Matrix[Tile] = {
-        if (row < 0 || row >= rowSize || col < 0 || col >= colSize) {
+    private def updateEmptyTiles(row: Int, col: Int, field: Matrix[Tile], visited: Set[(Int, Int)]): Matrix[Tile] = {
+        if (row < 0 || row >= rowSize || col < 0 || col >= colSize || visited.contains((row, col))) {
             field
         } else {
             val tile = field.cell(row, col)
@@ -69,10 +69,11 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) {
                 field
             } else {
                 val updatedField = field.replaceCell(row, col, Tile(tile.isBomb, tile.bombCount, false, false))
-                val updatedField1 = updateEmptyTiles(row - 1, col, updatedField)
-                val updatedField2 = updateEmptyTiles(row + 1, col, updatedField1)
-                val updatedField3 = updateEmptyTiles(row, col - 1, updatedField2)
-                updateEmptyTiles(row, col + 1, updatedField3)
+                val updatedVisited = visited + ((row, col))
+                val updatedField1 = updateEmptyTiles(row - 1, col, updatedField, updatedVisited)
+                val updatedField2 = updateEmptyTiles(row + 1, col, updatedField1, updatedVisited)
+                val updatedField3 = updateEmptyTiles(row, col - 1, updatedField2, updatedVisited)
+                updateEmptyTiles(row, col + 1, updatedField3, updatedVisited)
             }
         }
     }
