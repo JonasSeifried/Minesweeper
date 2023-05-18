@@ -1,5 +1,7 @@
 package de.htwg.se.minesweeper.model
 
+import de.htwg.se.minesweeper.model.Difficulty.Difficulty
+
 import scala.util.Random
 
 case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializable {

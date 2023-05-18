@@ -1,13 +1,14 @@
 package de.htwg.se.minesweeper.model
 
+import de.htwg.se.minesweeper.model.Difficulty.Easy
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers._
+import org.scalatest.matchers.should.Matchers.*
 
 class FieldCreatorSpec extends AnyWordSpec {
   "A Field Creator" should {
     "Create an Minesweeper Field" in {
       val fieldCreator = new FieldCreator
-      val field = fieldCreator.createField(new Field(3,3))
+      val field = fieldCreator.createField(new Field(3, 3, Easy))
       field.getTile(0,0).isHidden should be(true)
 
     }

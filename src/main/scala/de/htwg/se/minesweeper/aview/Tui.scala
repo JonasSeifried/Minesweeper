@@ -1,18 +1,16 @@
 package de.htwg.se.minesweeper
 package aview
 
-import util.{CoordinateManager, InGameState, Observer}
+import util.{CoordinateManager, Observer}
 import controller.Controller
-import de.htwg.se.minesweeper.model.SaveManager
-
-import scala.annotation.tailrec
+import de.htwg.se.minesweeper.util.State.InGameState
 
 class Tui(controller: Controller) extends Observer {
   private val coordManager = new CoordinateManager
   controller.add(this)
 
   override def update(): Unit = {
-    println("Anzahl unentdeckter Felder: " + controller.getUnopenedTiles)
+    println("Anzahl unentdeckter Felder: " + controller.getCountOfUnopenedTiles)
     if(controller.isPostGameState)
       println(controller)
       if (controller.gameWon) println("Spiel gewonnen!")
@@ -59,7 +57,7 @@ class Tui(controller: Controller) extends Observer {
           println("Thanks for playing!")
           false
         case 's' =>
-          if(SaveManager.saveGame(controller.field))
+          if(controller.saveGame())
             println("Game Saved!")
             return false
           println("Couldn't save Game")

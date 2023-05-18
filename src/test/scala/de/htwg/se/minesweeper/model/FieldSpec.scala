@@ -1,12 +1,13 @@
 package de.htwg.se.minesweeper.model
 
+import de.htwg.se.minesweeper.model.Difficulty.Easy
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers._
+import org.scalatest.matchers.should.Matchers.*
 
 class FieldSpec extends AnyWordSpec {
   "A Minesweeper Field" when {
     "Filled with 3x3 Hidden Tiles" should {
-      val field3x3 = new Field(3, 3)
+      val field3x3 = new Field(3, 3, Easy)
       "Should have be 3x3" in {
         field3x3.colSize should be(3)
         field3x3.rowSize should be(3)
@@ -25,7 +26,7 @@ class FieldSpec extends AnyWordSpec {
         ffield.getTile(1, 1).toString should be("🚩")
       }
       "print field" in {
-        val pfield = new Field(2,2).replaceTile(0,0, Tile(true, 0, false, false))
+        val pfield = new Field(2, 2, Easy).replaceTile(0,0, Tile(true, 0, false, false))
         pfield.toString should be("0💣⬜\n1⬜⬜\n  a b")
       }
     }

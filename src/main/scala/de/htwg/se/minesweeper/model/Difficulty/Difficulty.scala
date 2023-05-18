@@ -1,4 +1,6 @@
-package de.htwg.se.minesweeper.model
+package de.htwg.se.minesweeper.model.Difficulty
+
+import de.htwg.se.minesweeper.model.Difficulty
 
 sealed trait Difficulty {
   def getBombProbability: Double

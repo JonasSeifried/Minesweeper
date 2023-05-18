@@ -1,12 +1,13 @@
 package de.htwg.se.minesweeper.aview
 
 import de.htwg.se.minesweeper.controller.Controller
+import de.htwg.se.minesweeper.model.Difficulty.Easy
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers._
+import org.scalatest.matchers.should.Matchers.*
 import de.htwg.se.minesweeper.model.Field
 
 class TuiSpec extends AnyWordSpec {
-  val field: Field = new Field(3, 3).openTile(0,0)
+  val field: Field = new Field(3, 3, Easy).openTile(0,0)
   val controller: Controller = Controller(field)
   val tui = new Tui(controller)
 

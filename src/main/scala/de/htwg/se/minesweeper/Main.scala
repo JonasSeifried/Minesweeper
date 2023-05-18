@@ -1,8 +1,9 @@
 package de.htwg.se.minesweeper
 
 import aview.Tui
-import model.{Easy, Field, FieldCreator, SaveManager}
+import model.{Field, FieldCreator, SaveManager}
 import controller.Controller
+import de.htwg.se.minesweeper.model.Difficulty.Easy
 
 import scala.io.StdIn.readLine
 

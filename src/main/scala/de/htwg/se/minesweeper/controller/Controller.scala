@@ -1,7 +1,8 @@
 package de.htwg.se.minesweeper
 package controller
 
-import util.{Observable, PostGameState, PreGameState, State}
+import de.htwg.se.minesweeper.util.State.{PostGameState, PreGameState, State}
+import util.Observable
 import model.{Field, FieldCreator, SaveManager, Tile}
 
 case class Controller(var field: Field) extends Observable {
@@ -38,7 +39,7 @@ case class Controller(var field: Field) extends Observable {
 
   def getTileIsBomb(row: Int, col: Int): Boolean = getTile(row, col).isBomb
 
-  def getUnopenedTiles: Int = field.getCountOfUnopenedTiles
+  def getCountOfUnopenedTiles: Int = state.getCountOfUnopenedTiles
 
   def gameOver: Boolean = state.gameOver
 
@@ -65,6 +66,9 @@ case class Controller(var field: Field) extends Observable {
     if (newField == null) return false
     field = newField
     true
+
+  def saveGame(): Boolean =
+    SaveManager.saveGame(field)
 
   override def toString: String = state.fieldToString
 }
