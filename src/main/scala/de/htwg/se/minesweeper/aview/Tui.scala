@@ -40,7 +40,7 @@ class Tui(controller: Controller) extends Observer {
     else
       input(0) match {
         case 'r' =>
-          controller.renewField
+          controller.renewField()
           true
         case 'o' =>
           if (openOrFlag(input, true)) true

@@ -41,11 +41,11 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) {
 
     def getTile(row: Int, col: Int): Tile = tiles.cell(row, col)
 
-    def getUnopenedTiles: Int = tiles.rows.flatten.count(tile => tile.isHidden && !tile.isFlagged)
+    def getCountOfUnopenedTiles: Int = tiles.rows.flatten.count(tile => tile.isHidden && !tile.isFlagged)
 
     def isGameEnd: Boolean = tiles.rows.flatten.exists(tile => tile.isBomb && !tile.isHidden)
 
-    def hasWon: Boolean = !isGameEnd && getUnopenedTiles == 0
+    def hasWon: Boolean = !isGameEnd && getCountOfUnopenedTiles == 0
 
     private def generateBombs(): Unit = {
         val random = new Random()

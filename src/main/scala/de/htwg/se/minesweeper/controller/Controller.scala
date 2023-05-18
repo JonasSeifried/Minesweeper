@@ -4,13 +4,15 @@ package controller
 import util.{Observable, PostGameState, PreGameState, State}
 import model.{Field, FieldCreator, Tile}
 
-case class Controller(var field: Field, difficulty: Difficulty) extends Observable {
+case class Controller(var field: Field) extends Observable {
   private val fieldCreator = new FieldCreator
+  var state: State = PreGameState(this)
 
   def openTile(x: Int, y: Int): Boolean =
     if (isOutOfBounds(x, y)) false
     else {
       field = field.openTile(x, y)
+      if(gameWon || gameOver) state = PostGameState(this)
       notifyObservers()
       true
     }
@@ -19,6 +21,7 @@ case class Controller(var field: Field, difficulty: Difficulty) extends Observab
     if (isOutOfBounds(x, y)) false
     else {
       field = field.flagTile(x, y)
+      if(gameWon) state = PostGameState(this)
       notifyObservers()
       true
     }
@@ -48,7 +51,7 @@ case class Controller(var field: Field, difficulty: Difficulty) extends Observab
   def isPostGameState: Boolean = state.isPostGameState
 
   def renewField(): Field = {
-    field = fieldCreator.createField(new Field(field.rowSize, field.colSize, difficulty))
+    field = fieldCreator.createField(new Field(field.rowSize, field.colSize, field.difficulty))
     notifyObservers()
     field
   }
