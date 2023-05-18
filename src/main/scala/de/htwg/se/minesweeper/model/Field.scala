@@ -2,7 +2,7 @@ package de.htwg.se.minesweeper.model
 
 import scala.util.Random
 
-case class Field(tiles: Matrix[Tile], difficulty: Difficulty) {
+case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializable {
     private val chars = ('a' to 'z') ++ ('A' to 'Z')
     val rowSize: Int = tiles.rowSize
     val colSize: Int = tiles.colSize

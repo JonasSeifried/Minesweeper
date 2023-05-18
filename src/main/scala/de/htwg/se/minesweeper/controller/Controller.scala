@@ -2,7 +2,7 @@ package de.htwg.se.minesweeper
 package controller
 
 import util.{Observable, PostGameState, PreGameState, State}
-import model.{Field, FieldCreator, Tile}
+import model.{Field, FieldCreator, SaveManager, Tile}
 
 case class Controller(var field: Field) extends Observable {
   private val fieldCreator = new FieldCreator
@@ -58,6 +58,13 @@ case class Controller(var field: Field) extends Observable {
 
   private def isOutOfBounds(x: Int, y: Int): Boolean =
     x >= getRowSize || x < 0 || y >= getColSize || y < 0
+
+
+  def restoreGame(): Boolean =
+    val newField = SaveManager.restoreGame()
+    if (newField == null) return false
+    field = newField
+    true
 
   override def toString: String = state.fieldToString
 }

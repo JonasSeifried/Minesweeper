@@ -3,6 +3,7 @@ package aview
 
 import util.{CoordinateManager, InGameState, Observer}
 import controller.Controller
+import de.htwg.se.minesweeper.model.SaveManager
 
 import scala.annotation.tailrec
 
@@ -57,6 +58,19 @@ class Tui(controller: Controller) extends Observer {
         case 'q' =>
           println("Thanks for playing!")
           false
+        case 's' =>
+          if(SaveManager.saveGame(controller.field))
+            println("Game Saved!")
+            return false
+          println("Couldn't save Game")
+          false
+        case 'l' =>
+          if (controller.restoreGame())
+            println("successfully loaded game")
+            true
+          else
+            println("Failed to load game")
+            false
         case 'h' =>
           println(helpText)
           false
@@ -83,6 +97,8 @@ class Tui(controller: Controller) extends Observer {
       |o [a-z0-99]    - Open a Tile
       |f [a-z0-99]    - Flag a Tile
       |r              - Restart with a new Field
+      |s              - Save your current game
+      |l              - Load game
       |q              - Quit the game
       |-----------------------------------------
       |""".stripMargin

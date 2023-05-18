@@ -2,7 +2,7 @@ package de.htwg.se.minesweeper.model
 
 import scala.util.Random
 
-case class Tile(isBomb: Boolean, bombCount: Int, isHidden: Boolean, isFlagged: Boolean):
+case class Tile(isBomb: Boolean, bombCount: Int, isHidden: Boolean, isFlagged: Boolean) extends Serializable:
 
     private def bombCountToString =
         bombCount match
