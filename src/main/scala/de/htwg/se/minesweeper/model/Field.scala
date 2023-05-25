@@ -31,6 +31,12 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializab
         }
     }
 
+    def closeTile(row: Int, col: Int): Field =
+        val oldTile = tiles.cell(row, col)
+        val newTiles = tiles.replaceCell(row, col, Tile(oldTile.isBomb, oldTile.bombCount, true, oldTile.isFlagged))
+        Field(newTiles, difficulty)
+
+
     def flagTile(row: Int, col: Int): Field = {
         val oldTile = tiles.cell(row, col)
         if (oldTile.isHidden) {
