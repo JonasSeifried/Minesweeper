@@ -84,3 +84,4 @@ case class Controller(var field: Field) extends Observable {
   override def toString: String = state.fieldToString
 }
 
+
