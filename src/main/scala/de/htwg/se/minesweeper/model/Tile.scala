@@ -23,5 +23,3 @@ case class Tile(isBomb: Boolean, bombCount: Int, isHidden: Boolean, isFlagged: B
 
 
 
-
-
