@@ -9,15 +9,15 @@ import java.io.ByteArrayOutputStream
 
 
 class TuiSpec extends AnyWordSpec {
-  valfield: Field = new Field(3, 3, Easy).openTile(0,0)
-  valcontroller: Controller = Controller(field)
-  valtui= new Tui(controller)
+  val field: Field = new Field(3, 3, Easy).openTile(0,0)
+  val controller: Controller = Controller(field)
+  val tui= new Tui(controller)
 
   "A TUI" when {
     "with difference inputs" should {
       "renew the field" in {
         tui.processInput("r ")
-        controller.field should not befield
+        controller.field should not be field
       }
     }
 
@@ -77,7 +77,6 @@ class TuiSpec extends AnyWordSpec {
           result should be(true)
         }
       }
-
       "return false if inputLoop() returns false" in {
         val outputStream = new ByteArrayOutputStream()
         Console.withOut(outputStream) {
