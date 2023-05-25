@@ -5,9 +5,9 @@ import de.htwg.se.minesweeper.model.Difficulty.Difficulty
 import scala.util.Random
 
 case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializable {
-    private val chars = ('a' to 'z') ++ ('A' to 'Z')
-    val rowSize: Int = tiles.rowSize
-    val colSize: Int = tiles.colSize
+    private valchars= ('a' to 'z') ++ ('A' to 'Z')
+    valrowSize: Int = tiles.rowSize
+    valcolSize: Int = tiles.colSize
 
     def this(sizeX: Int, sizeY: Int, difficulty: Difficulty) = {
         this(new Matrix[Tile](sizeX, sizeY, Tile(false, 0, true, false)), difficulty)
@@ -23,19 +23,13 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializab
             if (oldTile.isBomb) {
                 Field(newTiles, difficulty)
             } else {
-                val updatedField = updateEmptyTiles(row, col, newTiles, Set.empty)
+                val updatedField = updateEmptyTiles(row, col, newTiles,Set.empty)
                 Field(updatedField, difficulty)
             }
         } else {
             this
         }
     }
-
-    def closeTile(row: Int, col: Int): Field =
-        val oldTile = tiles.cell(row, col)
-        val newTiles = tiles.replaceCell(row, col, Tile(oldTile.isBomb, oldTile.bombCount, true, oldTile.isFlagged))
-        Field(newTiles, difficulty)
-
 
     def flagTile(row: Int, col: Int): Field = {
         val oldTile = tiles.cell(row, col)
@@ -54,8 +48,8 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializab
     private def generateBombs(): Unit = {
         val random = new Random()
         for {
-            row <- 0 until rowSize
-            col <- 0 until colSize
+            row <- 0 untilrowSize
+              col <- 0 untilcolSize
         } {
             if (random.nextDouble() < difficulty.getBombProbability) {
                 val tile = tiles.cell(row, col)
@@ -65,7 +59,7 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializab
     }
 
     private def updateEmptyTiles(row: Int, col: Int, field: Matrix[Tile], visited: Set[(Int, Int)]): Matrix[Tile] = {
-        if (row < 0 || row >= rowSize || col < 0 || col >= colSize || visited.contains((row, col))) {
+        if (row < 0 || row >=rowSize|| col < 0 || col >=colSize|| visited.contains((row, col))) {
             field
         } else {
             val tile = field.cell(row, col)
@@ -81,6 +75,7 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializab
             }
         }
     }
+
 
     override def toString: String = {
         val sb = new StringBuilder()
