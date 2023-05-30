@@ -56,6 +56,13 @@ class TuiSpec extends AnyWordSpec {
       "return false when input starts with anything else" in {
         tui.processInput("csad") should be(false)
       }
+      "return true when input is 'r' and redo is successful" in {
+        tui.processInput("r") should be(false)
+      }
+
+      "return true when input is 'u' and undo is successful" in {
+        tui.processInput("u") should be(false)
+      }
     }
   }
 }
