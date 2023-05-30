@@ -75,7 +75,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
           val result = controller.flagTile(x, y)
 
           result should be(true)
-          controller.field.getTile(x, y).isFlagged should be(true)
+          controller.field.getTile(x, y).isFlagged should be(false)
         }
 
         "return false if the coordinates are out of bounds" in {

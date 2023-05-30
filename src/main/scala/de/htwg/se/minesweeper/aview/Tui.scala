@@ -11,24 +11,23 @@ class Tui(controller: Controller) extends Observer {
 
   override def update(): Unit = {
     println("Anzahl unentdeckter Felder: " + controller.getCountOfUnopenedTiles)
-    if (controller.isPostGameState) {
+    if(controller.isPostGameState)
       println(controller)
       if (controller.gameWon) println("Spiel gewonnen!")
       else if (controller.gameOver) println("Spiel verloren!")
-    }
+
   }
 
-  def run(): Boolean = {
+  def run(): Boolean =
     controller.state = InGameState(controller)
     println(controller)
     if (inputLoop()) true
     else false
-  }
 
-  private def inputLoop(): Boolean = {
-    val input = scala.io.StdIn.readLine()
+  protected def inputLoop(): Boolean = {
+    val input = scala.io.StdIn.readLine.replaceAll(" ", "")
     if (processInput(input)) {
-      if (controller.isPostGameState) return false
+      if(controller.isPostGameState) return false
       println(controller)
     }
     if (input.isEmpty || input(0) != 'q') return inputLoop()
@@ -39,65 +38,74 @@ class Tui(controller: Controller) extends Observer {
     if (input.isEmpty) false
     else
       input(0) match {
-        case 'r' =>
+        case 'n' =>
           controller.renewField()
           true
         case 'o' =>
           if (openOrFlag(input, true)) true
           else {
-            println("Falsche Verwendung des Öffnen-Befehls")
+            println("Wrong usage of the open command")
             false
           }
         case 'f' =>
           if (openOrFlag(input, false)) true
           else {
-            println("Falsche Verwendung des Flaggen-Befehls")
+            println("Wrong usage of the flag command")
             false
           }
         case 'q' =>
-          println("Vielen Dank fürs Spielen!")
+          println("Thanks for playing!")
           false
         case 's' =>
-          if (controller.saveGame())
-            println("Spiel gespeichert!")
-          else
-            println("Spiel konnte nicht gespeichert werden")
+          if(controller.saveGame())
+            println("Game Saved!")
+            return false
+          println("Couldn't save Game")
           false
         case 'l' =>
           if (controller.restoreGame())
-            println("Spiel erfolgreich geladen")
+            println("successfully loaded game")
+            true
           else
-            println("Spiel konnte nicht geladen werden")
-          false
+            println("Failed to load game")
+            false
+        case 'r' =>
+          controller.redo
+        case 'u' =>
+          controller.undo
         case 'h' =>
           println(helpText)
           false
         case _ =>
-          println("Unbekannter Befehl")
+          println("Unknown command")
           false
       }
 
   private def openOrFlag(input: String, open: Boolean): Boolean =
-    if (input.length < 4 || input.length > 5) false
+    if (input.length < 3 || input.length > 4) false
     else {
-      val coords = coordManager.decrypt(input.substring(2))
-      if (open)
-        controller.openTile(coords._1, coords._2)
-      else
-        controller.flagTile(coords._1, coords._2)
+      coordManager.decrypt(input.substring(1)) match
+        case None => false
+        case Some(coords) =>
+          if (open) controller.openTile(coords._1, coords._2)
+          else controller.flagTile(coords._1, coords._2)
     }
 
   private val helpText =
     """
       |Minesweeper man
       |-----------------------------------------
-      |h              - Öffnet die Hilfe
-      |o [a-z0-99]    - Öffnet ein Feld
-      |f [a-z0-99]    - Flaggt ein Feld
-      |r              - Startet ein neues Spiel
-      |s              - Speichert das aktuelle Spiel
-      |l              - Lädt ein gespeichertes Spiel
-      |q              - Beendet das Spiel
+      |h              - Opens Minesweeper man
+      |o [a-z0-99]    - Open a Tile
+      |f [a-z0-99]    - Flag a Tile
+      |n              - New Field
+      |r              - Redo last Command
+      |u              - Undo last Command
+      |n              - New Field
+      |s              - Save your current game
+      |l              - Load game
+      |q              - Quit the game
       |-----------------------------------------
       |""".stripMargin
 }
+
