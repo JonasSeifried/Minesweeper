@@ -28,24 +28,30 @@ class TuiSpec extends AnyWordSpec {
         tui.processInput("f a1") should be(false)
       }
       "return false when input starts with 'o' or 'f' and bad input" should {
-        "return false when input length < 4" in {
+        "return false when input length < 3" in {
           tui.processInput("f") should be(false)
         }
-        "return false when input length > 5" in {
+        "return false when input length > 4" in {
           tui.processInput("f a244") should be(false)
         }
         "return false when input with out of bounds coords" in {
           tui.processInput("o d0") should be(false)
         }
-        "return false when input is 'q'" in {
-          tui.processInput("q") should be(false)
-        }
-        "return false when input is 'h'" in {
-          tui.processInput("h") should be(false)
-        }
+      }
+      "return false when input is 'q'" in {
+        tui.processInput("q") should be(false)
+      }
+      "return false when input is 'h'" in {
+        tui.processInput("h") should be(false)
       }
       "return false when input starts with anything else" in {
         tui.processInput("csad") should be(false)
+      }
+    }
+
+    "running" should {
+      "return true when the input loop completes successfully" in {
+        tui.run() should be(true)
       }
     }
   }
