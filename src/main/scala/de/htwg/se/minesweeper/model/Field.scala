@@ -23,7 +23,7 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializab
             if (oldTile.isBomb) {
                 Field(newTiles, difficulty)
             } else {
-                val updatedField = updateEmptyTiles(row, col, newTiles,Set.empty)
+                val updatedField = updateEmptyTiles(row, col, newTiles, Set.empty)
                 Field(updatedField, difficulty)
             }
         } else {

@@ -50,7 +50,7 @@ class FieldSpec extends AnyWordSpec {
       "not replace already visible tiles" in {
         val updatedField = field3x3.openTile(1, 1)
         val replacedField = updatedField.replaceTile(1, 1, Tile(true, 0, false, false))
-        replacedField.getTile(1, 1).toString should be("0️⃣")
+        replacedField.getTile(1, 1) should be(Tile(true, 0, false, false))
       }
     }
   }
