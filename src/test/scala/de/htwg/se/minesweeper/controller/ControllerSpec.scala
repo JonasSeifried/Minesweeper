@@ -46,6 +46,26 @@ class ControllerSpec extends AnyWordSpec with Matchers {
           controller.field should be(field)
         }
       }
+      "set the state to PostGameState when the game is won" in {
+        var gameWon = true // Assume game won initially
+        import scala.util.control.Breaks._
+        // Open all tiles except for one bomb tile
+        breakable {
+          for (i <- 0 until controller.getRowSize) {
+            for (j <- 0 until controller.getColSize) {
+              if (!controller.getTileIsBomb(i, j)) {
+                controller.openTile(i, j)
+                if (!controller.gameWon) {
+                  gameWon = false // Set the flag to indicate game not won
+                  break() // Exit the inner loop
+                }
+              }
+            }
+            if (!gameWon) break() // Exit the outer loop if game not won
+          }
+        }
+        controller.state.isPostGameState should be(true)
+      }
     }
   }
 }
