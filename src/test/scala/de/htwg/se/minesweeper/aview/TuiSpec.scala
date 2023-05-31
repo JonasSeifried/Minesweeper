@@ -5,6 +5,7 @@ import de.htwg.se.minesweeper.model.Difficulty.Easy
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
 import de.htwg.se.minesweeper.model.Field
+import java.io.ByteArrayOutputStream
 
 class TuiSpec extends AnyWordSpec {
   val field: Field = new Field(3, 3, Easy).openTile(0, 0)
@@ -59,9 +60,29 @@ class TuiSpec extends AnyWordSpec {
       "return true when input is 'r' and redo is successful" in {
         tui.processInput("r") should be(false)
       }
-
       "return true when input is 'u' and undo is successful" in {
         tui.processInput("u") should be(false)
+      }
+    }
+
+    "The run() method" should {
+      "return true" in {
+        val outputStream = new ByteArrayOutputStream()
+        Console.withOut(outputStream) {
+          val result = tui.run()
+          result should be(true)
+        }
+      }
+      "return false if inputLoop() returns false" in {
+        val outputStream = new ByteArrayOutputStream()
+        Console.withOut(outputStream) {
+          // Mocking inputLoop() to always return false
+          val tui = new Tui(controller) {
+            override def inputLoop(): Boolean = false
+          }
+          val result = tui.run()
+          result should be(false)
+        }
       }
     }
   }
