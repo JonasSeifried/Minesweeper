@@ -1,3 +1,5 @@
+package de.htwg.se.minesweeper.controller
+
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
 import de.htwg.se.minesweeper.model.{Field, Difficulty, Matrix, Tile}
@@ -8,7 +10,7 @@ class FlagCommandSpec extends AnyWordSpec with Matchers {
     val difficulty = Difficulty.Easy
     val sizeX = 5
     val sizeY = 5
-    val tiles = Matrix.fill(sizeX, sizeY)(Tile(false, 0, true, false))
+    val tiles = Matrix(Vector.tabulate(sizeX, sizeY)((_, _) => Tile(false, 0, true, false)))
     val field = Field(tiles, difficulty)  // Beispiel-Feld mit Größe 5x5
     val x = 2
     val y = 3

@@ -95,4 +95,7 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializab
         for (i <- 0 until colSize) sb.append(" ").append(chars(i))
         sb.toString()
     }
+
+    def isTileFlagged(row: Int, col: Int): Boolean = tiles.cell(row, col).isFlagged
+
 }
