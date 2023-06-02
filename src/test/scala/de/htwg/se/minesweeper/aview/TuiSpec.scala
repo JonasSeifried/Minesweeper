@@ -5,7 +5,8 @@ import de.htwg.se.minesweeper.model.Difficulty.Easy
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
 import de.htwg.se.minesweeper.model.Field
-import java.io.ByteArrayOutputStream
+import java.io.{ByteArrayOutputStream, ByteArrayInputStream, PrintStream}
+
 
 class TuiSpec extends AnyWordSpec {
   val field: Field = new Field(3, 3, Easy).openTile(0, 0)
@@ -79,6 +80,43 @@ class TuiSpec extends AnyWordSpec {
         }
         val result = tui.run()
         result should be(false)
+      }
+    }
+  }
+
+  "The update() method" should {
+    "print correct messages when in post-game state" in {
+      val controllerGameWon = new Controller(field) {
+        override def isPostGameState: Boolean = true
+        override def gameWon: Boolean = true
+        override def gameOver: Boolean = false
+      }
+
+      val tuiGameWon = new Tui(controllerGameWon)
+
+      val outputStreamGameWon = new ByteArrayOutputStream()
+      Console.withOut(outputStreamGameWon) {
+        tuiGameWon.update()
+        val consoleOutputGameWon = outputStreamGameWon.toString
+        consoleOutputGameWon should include("Anzahl unentdeckter Felder: " + controllerGameWon.getCountOfUnopenedTiles)
+        consoleOutputGameWon should include("Spiel gewonnen!")
+      }
+
+      val controllerGameOver = new Controller(field) {
+        override def isPostGameState: Boolean = true
+        override def gameWon: Boolean = false
+        override def gameOver: Boolean = true
+      }
+
+      val tuiGameOver = new Tui(controllerGameOver)
+
+      val outputStreamGameOver = new ByteArrayOutputStream()
+      Console.withOut(outputStreamGameOver) {
+        tuiGameOver.update()
+
+        val consoleOutputGameOver = outputStreamGameOver.toString
+        consoleOutputGameOver should include("Anzahl unentdeckter Felder: " + controllerGameOver.getCountOfUnopenedTiles)
+        consoleOutputGameOver should include("Spiel verloren!")
       }
     }
   }
