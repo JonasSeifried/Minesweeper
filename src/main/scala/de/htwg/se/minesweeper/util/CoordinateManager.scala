@@ -19,10 +19,6 @@ class CoordinateManager {
       None
     }
   }
-
-
-
-
   private def alphaToNum(char: Char): Int =
     chars.indexOf(char)
 }

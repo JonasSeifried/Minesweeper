@@ -15,7 +15,6 @@ class Tui(controller: Controller) extends Observer {
       println(controller)
       if (controller.gameWon) println("Spiel gewonnen!")
       else if (controller.gameOver) println("Spiel verloren!")
-
   }
 
   def run(): Boolean =
@@ -27,11 +26,11 @@ class Tui(controller: Controller) extends Observer {
   def inputLoop(): Boolean = {
     val input = scala.io.StdIn.readLine.replaceAll(" ", "")
     if (processInput(input)) {
-      if(controller.isPostGameState) return false
+      if (controller.isPostGameState) return false
       println(controller)
     }
-    if (input.isEmpty || input(0) != 'q') return inputLoop()
-    true
+    if (input.isEmpty || input(0) == 'q') return false
+    inputLoop()
   }
 
   def processInput(input: String): Boolean =

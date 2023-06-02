@@ -11,7 +11,7 @@ class FlagCommandSpec extends AnyWordSpec with Matchers {
     val sizeX = 5
     val sizeY = 5
     val tiles = Matrix(Vector.tabulate(sizeX, sizeY)((_, _) => Tile(false, 0, true, false)))
-    val field = Field(tiles, difficulty)  // Beispiel-Feld mit Größe 5x5
+    val field = Field(tiles, difficulty)
     val x = 2
     val y = 3
     val flagCommand = new FlagCommand(x, y)

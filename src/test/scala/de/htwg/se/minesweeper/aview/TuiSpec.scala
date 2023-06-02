@@ -48,9 +48,6 @@ class TuiSpec extends AnyWordSpec {
       "return true when input is 's' and game is successfully saved" in {
         tui.processInput("s") should be(false)
       }
-      /*"return true when input is 'l' and game is successfully loaded" in {
-        tui.processInput("l") should be(true)
-      }*/
       "return false when input is 'l' and game fails to load" in {
         tui.processInput("l") should be(false)
       }
@@ -64,25 +61,24 @@ class TuiSpec extends AnyWordSpec {
         tui.processInput("u") should be(false)
       }
     }
+  }
 
-    "The run() method" should {
-      "return true" in {
-        val outputStream = new ByteArrayOutputStream()
-        Console.withOut(outputStream) {
-          val result = tui.run()
-          result should be(true)
-        }
+  "The run() method" should {
+    "return true" in {
+      val outputStream = new ByteArrayOutputStream()
+      Console.withOut(outputStream) {
+        val result = tui.run()
+        result should be(false)
       }
-      "return false if inputLoop() returns false" in {
-        val outputStream = new ByteArrayOutputStream()
-        Console.withOut(outputStream) {
-          // Mocking inputLoop() to always return false
-          val tui = new Tui(controller) {
-            override def inputLoop(): Boolean = false
-          }
-          val result = tui.run()
-          result should be(false)
+    }
+    "return false if inputLoop() returns false" in {
+      val outputStream = new ByteArrayOutputStream()
+      Console.withOut(outputStream) {
+        val tui = new Tui(controller) {
+          override def inputLoop(): Boolean = false
         }
+        val result = tui.run()
+        result should be(false)
       }
     }
   }
