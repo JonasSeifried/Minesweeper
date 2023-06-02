@@ -12,7 +12,7 @@ class CoordinateManager {
       if (res.isSuccess) Some(res.get, y)
       else None
     } else if (input.length == 3) {
-      val res = Try(input.substring(2).toInt)
+      val res = Try(input.substring(1).toInt)
       if (res.isSuccess) Some(res.get, y)
       else None
     } else {
