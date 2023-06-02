@@ -80,13 +80,16 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializab
     override def toString: String = {
         val sb = new StringBuilder()
         for ((row, row_idx) <- tiles.rows.zipWithIndex) {
+            if(row_idx < 10)
+                sb.append(" ")
             sb.append(row_idx)
+            sb.append(" ")
             for (tile <- row) {
                 sb.append(tile)
             }
             sb.append("\n")
         }
-        sb.append(" ")
+        sb.append("   ")
         for (i <- 0 until colSize) sb.append(" ").append(chars(i))
         sb.toString()
     }
