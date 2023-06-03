@@ -11,10 +11,9 @@ class Tui(controller: Controller) extends Observer {
 
   override def update(): Unit = {
     println("Anzahl unentdeckter Felder: " + controller.getCountOfUnopenedTiles)
-    if(controller.isPostGameState)
-      println(controller)
-      if (controller.gameWon) println("Spiel gewonnen!")
-      else if (controller.gameOver) println("Spiel verloren!")
+    println(controller)
+    if (controller.gameWon) println("Spiel gewonnen!")
+    else if (controller.gameOver) println("Spiel verloren!")
   }
 
   def run(): Boolean =
@@ -27,7 +26,6 @@ class Tui(controller: Controller) extends Observer {
     val input = scala.io.StdIn.readLine.replaceAll(" ", "")
     if (processInput(input)) {
       if (controller.isPostGameState) return false
-      println(controller)
     }
     if (input.isEmpty || input(0) == 'q') return false
     inputLoop()
