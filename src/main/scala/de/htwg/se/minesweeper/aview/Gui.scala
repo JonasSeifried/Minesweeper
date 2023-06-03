@@ -1,7 +1,7 @@
 package de.htwg.se.minesweeper.aview
 
 import de.htwg.se.minesweeper.controller.Controller
-import de.htwg.se.minesweeper.util.Observer
+import de.htwg.se.minesweeper.util.{Event, Observer}
 
 import scala.swing.*
 import scala.swing.event.MouseClicked
@@ -11,7 +11,7 @@ class Gui(controller: Controller) extends Frame with Observer:
   menuBar = new MenuBar {
     contents += new Menu("File") {
       contents += new MenuItem(Action("Exit") {
-        sys.exit(0)
+        controller.quit()
       })
     }
   }
@@ -29,7 +29,14 @@ class Gui(controller: Controller) extends Frame with Observer:
       add(gridCreate(controller.getRowSize, controller.getColSize), BorderPanel.Position.Center)
     }
 
-  override def update(): Unit = contents = updateContent();  repaint()
+  override def update(e: Event): Unit = e match
+    case Event.Move =>
+      contents = updateContent()
+      repaint()
+    case Event.GameOver =>
+      this.dispose()
+    case Event.Quit =>
+      this.dispose()
 
   private def gridCreate(rowSize: Int, colSize: Int): GridPanel =
     new GridPanel(rowSize, colSize) {
@@ -57,10 +64,10 @@ class Gui(controller: Controller) extends Frame with Observer:
     }
 
   private def tileToString(row: Int, col: Int): String =
-    if(controller.getTileIsHidden(row, col)) return "⬜"
     if(controller.getTileIsFlagged(row, col)) return "🚩"
+    if(controller.getTileIsHidden(row, col)) return "⬜"
     if(controller.getTileIsBomb(row, col)) return "💣"
-    controller.getTile(row, col).toString
+    controller.getTile(row, col).bombCount.toString
 
 
 
