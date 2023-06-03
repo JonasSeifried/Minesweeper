@@ -4,7 +4,7 @@ trait Observer:
 
 
 trait Observable:
-  var subscribers: Vector[Observer] = Vector()
+  private var subscribers: Vector[Observer] = Vector()
 
   def add(s: Observer): Unit = subscribers = subscribers :+ s
 
