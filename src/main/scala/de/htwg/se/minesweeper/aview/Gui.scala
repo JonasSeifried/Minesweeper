@@ -46,13 +46,12 @@ class Gui(controller: Controller) extends Frame with Observer:
       listenTo(mouse.clicks)
 
       reactions += {
-        case evt @ MouseClicked(src, pt, mod, clicks, props) => {
+        case evt @ MouseClicked(src, pt, mod, clicks, props) =>
           val mouseBtn = evt.peer.getButton
           if(mouseBtn == 1)
             controller.openTile(row, col)
           else if(mouseBtn == 3)
             controller.flagTile(row, col)
-        }
       }
 
     }
