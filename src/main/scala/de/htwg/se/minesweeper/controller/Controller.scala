@@ -6,7 +6,7 @@ import util.{Observable, UndoManager}
 import model.{Field, FieldCreator, SaveManager, Tile}
 
 case class Controller(var field: Field) extends Observable {
-  val undoManager = new UndoManager[Field]
+  private val undoManager = new UndoManager[Field]
   private val fieldCreator = new FieldCreator
   var state: State = PreGameState(this)
 
@@ -31,12 +31,20 @@ case class Controller(var field: Field) extends Observable {
   def undo: Boolean =
     val oldField = field
     field = undoManager.undoStep(field)
-    !(oldField eq field)
+    if (!(oldField eq field))
+      notifyObservers()
+      true
+    else
+      false
 
   def redo: Boolean =
     val oldField = field
     field = undoManager.redoStep(field)
-    !(oldField eq field)
+    if (!(oldField eq field))
+      notifyObservers()
+      true
+    else
+      false
 
   def getTile(row: Int, col: Int): Tile =
     if (isOutOfBounds(row, col)) null
@@ -49,6 +57,8 @@ case class Controller(var field: Field) extends Observable {
   def getTileIsHidden(row: Int, col: Int): Boolean = getTile(row, col).isHidden
 
   def getTileIsBomb(row: Int, col: Int): Boolean = getTile(row, col).isBomb
+
+  def getTileIsFlagged(row: Int, col: Int): Boolean = getTile(row, col).isFlagged
 
   def getCountOfUnopenedTiles: Int = state.getCountOfUnopenedTiles
 
