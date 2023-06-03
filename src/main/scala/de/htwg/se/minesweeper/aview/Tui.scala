@@ -1,20 +1,23 @@
 package de.htwg.se.minesweeper
 package aview
 
-import util.{CoordinateManager, Observer}
+import util.{CoordinateManager, Event, Observer}
 import controller.Controller
 import de.htwg.se.minesweeper.util.State.InGameState
 
 class Tui(controller: Controller) extends Observer {
   private val coordManager = new CoordinateManager
+  var running = true
   controller.add(this)
 
-  override def update(): Unit = {
-    println("Anzahl unentdeckter Felder: " + controller.getCountOfUnopenedTiles)
-    println(controller)
-    if (controller.gameWon) println("Spiel gewonnen!")
-    else if (controller.gameOver) println("Spiel verloren!")
-  }
+  override def update(e: Event): Unit = e match
+    case Event.Move =>
+      println("Anzahl unentdeckter Felder: " + controller.getCountOfUnopenedTiles)
+      println(controller)
+    case Event.GameOver =>
+      if (controller.gameWon) println("Spiel gewonnen!")
+      else if (controller.gameOver) println("Spiel verloren!")
+    case Event.Quit => running = false
 
   def run(): Boolean =
     controller.state = InGameState(controller)
@@ -24,10 +27,11 @@ class Tui(controller: Controller) extends Observer {
 
   def inputLoop(): Boolean = {
     val input = scala.io.StdIn.readLine.replaceAll(" ", "")
+    if (!running) return false
     if (processInput(input)) {
       if (controller.isPostGameState) return false
     }
-    if (input.isEmpty || input(0) == 'q') return false
+    if (input.isEmpty) return false
     inputLoop()
   }
 
@@ -52,6 +56,7 @@ class Tui(controller: Controller) extends Observer {
           }
         case 'q' =>
           println("Thanks for playing!")
+          controller.quit()
           false
         case 's' =>
           if(controller.saveGame())

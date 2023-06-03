@@ -2,7 +2,7 @@ package de.htwg.se.minesweeper
 package controller
 
 import de.htwg.se.minesweeper.util.State.{PostGameState, PreGameState, State}
-import util.{Observable, UndoManager}
+import util.{Event, Observable, UndoManager}
 import model.{Field, FieldCreator, SaveManager, Tile}
 
 case class Controller(var field: Field) extends Observable {
@@ -14,8 +14,10 @@ case class Controller(var field: Field) extends Observable {
     if (isOutOfBounds(x, y)) false
     else {
       field = undoManager.doStep(field, OpenCommand(x, y))
-      if(gameWon || gameOver) state = PostGameState(this)
-      notifyObservers()
+      notifyObservers(Event.Move)
+      if(gameWon || gameOver)
+        state = PostGameState(this)
+        notifyObservers(Event.GameOver)
       true
     }
 
@@ -23,8 +25,10 @@ case class Controller(var field: Field) extends Observable {
     if (isOutOfBounds(x, y)) false
     else {
       field = undoManager.doStep(field, FlagCommand(x, y))
-      if(gameWon) state = PostGameState(this)
-      notifyObservers()
+      notifyObservers(Event.Move)
+      if(gameWon)
+        state = PostGameState(this)
+        notifyObservers(Event.GameOver)
       true
     }
 
@@ -32,7 +36,7 @@ case class Controller(var field: Field) extends Observable {
     val oldField = field
     field = undoManager.undoStep(field)
     if (!(oldField eq field))
-      notifyObservers()
+      notifyObservers(Event.Move)
       true
     else
       false
@@ -41,14 +45,16 @@ case class Controller(var field: Field) extends Observable {
     val oldField = field
     field = undoManager.redoStep(field)
     if (!(oldField eq field))
-      notifyObservers()
+      notifyObservers(Event.Move)
       true
     else
       false
 
+  def quit(): Unit = notifyObservers(Event.Quit)
+
   def getTile(row: Int, col: Int): Tile =
-    if (isOutOfBounds(row, col)) null
-    else field.getTile(row, col)
+    if (isOutOfBounds(row, col)) return null
+    field.getTile(row, col)
 
   def getColSize: Int = field.colSize
 
@@ -74,7 +80,7 @@ case class Controller(var field: Field) extends Observable {
 
   def renewField(): Field = {
     field = fieldCreator.createField(new Field(field.rowSize, field.colSize, field.difficulty))
-    notifyObservers()
+    notifyObservers(Event.Move)
     field
   }
 
