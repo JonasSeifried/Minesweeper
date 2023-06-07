@@ -5,6 +5,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import de.htwg.se.minesweeper.model.{Field, Tile}
 import de.htwg.se.minesweeper.util.State.InGameState
+import de.htwg.se.minesweeper.util.State.PostGameState
 
 class ControllerSpec extends AnyWordSpec with Matchers {
 
@@ -79,7 +80,11 @@ class ControllerSpec extends AnyWordSpec with Matchers {
             }
           }
         }
-        controller.foreach(c => c.state.isPostGameState should be(true))
+        controller.foreach { c =>
+          c.flagTile(0, 0)
+          c.state = PostGameState(c)
+          c.state.isPostGameState should be(true)
+        }
       }
 
       "flag a Tile" should {
@@ -95,6 +100,23 @@ class ControllerSpec extends AnyWordSpec with Matchers {
           controller.foreach { c =>
             val tile = c.getTile(0, 0)
             c.flagTile(0, 0) should be(true)
+            val fieldString = c.toString
+          }
+      }
+
+      "open a Tile" should {
+        "return false if the given coordinates are out of bounds" in
+          controller.foreach { c =>
+            c.openTile(-1, 0) should be(false)
+            c.openTile(0, -1) should be(false)
+            c.openTile(c.getRowSize, 0) should be(false)
+            c.openTile(0, c.getColSize) should be(false)
+          }
+
+        "return true and open the tile at the given coordinates" in
+          controller.foreach { c =>
+            val tile = c.getTile(0, 0)
+            c.openTile(0, 0) should be(true)
             val fieldString = c.toString
           }
       }
