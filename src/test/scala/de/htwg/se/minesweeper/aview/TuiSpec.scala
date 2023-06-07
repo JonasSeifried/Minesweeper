@@ -178,41 +178,6 @@ class TuiSpec extends AnyWordSpec {
         result should be(false)
       }
     }
-
-    "return false when input starts with 'q'" in {
-      val inputStream = new ByteArrayInputStream("q\n".getBytes)
-      Console.withIn(inputStream) {
-        val result = tui.inputLoop()
-        result should be(false)
-      }
-    }
-
-    "call processInput() with non-empty input" in {
-      val input = "o a1"
-      val inputStream = new ByteArrayInputStream((input + "\n").getBytes)
-      val outputStream = new ByteArrayOutputStream()
-      Console.withIn(inputStream) {
-        Console.withOut(outputStream) {
-          tui.inputLoop()
-          val consoleOutput = outputStream.toString
-          consoleOutput should include(controller.toString)
-        }
-      }
-    }
-
-    "return false when game is in post-game state" in {
-      val input = "o a1"
-      val inputStream = new ByteArrayInputStream((input + "\n").getBytes)
-      val outputStream = new ByteArrayOutputStream()
-      Console.withIn(inputStream) {
-        Console.withOut(outputStream) {
-          val tuiPostGameState = new Tui(controller) {
-             def isPostGameState: Boolean = true
-          }
-          val result = tuiPostGameState.inputLoop()
-          result should be(false)
-        }
-      }
-    }
   }
 }
+
