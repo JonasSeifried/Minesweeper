@@ -120,6 +120,22 @@ class ControllerSpec extends AnyWordSpec with Matchers {
             val fieldString = c.toString
           }
       }
+
+      "change the state to PostGameState when a tile is flagged and the game is won" in {
+        controller.foreach { c =>
+          c.state = InGameState(c)
+          for (i <- 0 until c.getRowSize) {
+            for (j <- 0 until c.getColSize) {
+              if (!c.getTileIsBomb(i, j)) {
+                c.openTile(i, j)
+              }
+            }
+          }
+          c.flagTile(0, 0)
+          c.gameWon should be(true)
+          c.state.isPostGameState should be(true)
+        }
+      }
     }
   }
 }
