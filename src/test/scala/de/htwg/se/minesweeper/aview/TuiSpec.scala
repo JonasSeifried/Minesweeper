@@ -6,6 +6,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
 import de.htwg.se.minesweeper.model.Field
 import java.io.{ByteArrayOutputStream, ByteArrayInputStream, PrintStream}
+import org.scalatest.matchers.should.Matchers._
 
 
 class TuiSpec extends AnyWordSpec {
@@ -47,11 +48,56 @@ class TuiSpec extends AnyWordSpec {
         }
       }
       "return true when input is 's' and game is successfully saved" in {
-        tui.processInput("s") should be(false)
+        val outputStream = new ByteArrayOutputStream()
+        Console.withOut(outputStream) {
+          tui.processInput("s") should be(false)
+          val consoleOutput = outputStream.toString
+          consoleOutput should include("Game Saved!")
+        }
       }
+
+      "return false when input is 's' and game fails to save" in {
+        val failingController = new Controller(field) {
+          override def saveGame(): Boolean = false
+        }
+        val tui = new Tui(failingController)
+
+        val outputStream = new ByteArrayOutputStream()
+        Console.withOut(outputStream) {
+          tui.processInput("s") should be(false)
+          val consoleOutput = outputStream.toString
+          consoleOutput should include("Couldn't save Game")
+        }
+      }
+
+      "return true when input is 'l' and game is successfully loaded" in {
+        val successfulController = new Controller(field) {
+          override def restoreGame(): Boolean = true
+        }
+        val tui = new Tui(successfulController)
+
+        val outputStream = new ByteArrayOutputStream()
+        Console.withOut(outputStream) {
+          tui.processInput("l") should be(true)
+          val consoleOutput = outputStream.toString
+          consoleOutput should include("Successfully loaded game")
+        }
+      }
+
       "return false when input is 'l' and game fails to load" in {
-        tui.processInput("l") should be(false)
+        val failingController = new Controller(field) {
+          override def restoreGame(): Boolean = false
+        }
+        val tui = new Tui(failingController)
+
+        val outputStream = new ByteArrayOutputStream()
+        Console.withOut(outputStream) {
+          tui.processInput("l") should be(false)
+          val consoleOutput = outputStream.toString
+          consoleOutput should include("Failed to load game")
+        }
       }
+
       "return false when input starts with anything else" in {
         tui.processInput("csad") should be(false)
       }
