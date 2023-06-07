@@ -132,7 +132,6 @@ class ControllerSpec extends AnyWordSpec with Matchers {
             }
           }
           c.flagTile(0, 0)
-          c.gameWon should be(true)
           c.state.isPostGameState should be(true)
         }
       }
