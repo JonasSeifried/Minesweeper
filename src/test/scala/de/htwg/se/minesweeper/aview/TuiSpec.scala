@@ -110,14 +110,18 @@ class TuiSpec extends AnyWordSpec {
     }
   }
 
-  "The run() method" should {
-    "return true" in {
+  "run() method" should {
+    "return true if inputLoop() returns true" in {
       val outputStream = new ByteArrayOutputStream()
       Console.withOut(outputStream) {
+        val tui = new Tui(controller) {
+          override def inputLoop(): Boolean = true
+        }
         val result = tui.run()
-        result should be(false)
+        result should be(true)
       }
     }
+
     "return false if inputLoop() returns false" in {
       val outputStream = new ByteArrayOutputStream()
       Console.withOut(outputStream) {
@@ -163,6 +167,51 @@ class TuiSpec extends AnyWordSpec {
         val consoleOutputGameOver = outputStreamGameOver.toString
         consoleOutputGameOver should include("Anzahl unentdeckter Felder: " + controllerGameOver.getCountOfUnopenedTiles)
         consoleOutputGameOver should include("Spiel verloren!")
+      }
+    }
+  }
+  "inputLoop() method" should {
+    "return false when input is empty" in {
+      val inputStream = new ByteArrayInputStream("\n".getBytes)
+      Console.withIn(inputStream) {
+        val result = tui.inputLoop()
+        result should be(false)
+      }
+    }
+
+    "return false when input starts with 'q'" in {
+      val inputStream = new ByteArrayInputStream("q\n".getBytes)
+      Console.withIn(inputStream) {
+        val result = tui.inputLoop()
+        result should be(false)
+      }
+    }
+
+    "call processInput() with non-empty input" in {
+      val input = "o a1"
+      val inputStream = new ByteArrayInputStream((input + "\n").getBytes)
+      val outputStream = new ByteArrayOutputStream()
+      Console.withIn(inputStream) {
+        Console.withOut(outputStream) {
+          tui.inputLoop()
+          val consoleOutput = outputStream.toString
+          consoleOutput should include(controller.toString)
+        }
+      }
+    }
+
+    "return false when game is in post-game state" in {
+      val input = "o a1"
+      val inputStream = new ByteArrayInputStream((input + "\n").getBytes)
+      val outputStream = new ByteArrayOutputStream()
+      Console.withIn(inputStream) {
+        Console.withOut(outputStream) {
+          val tuiPostGameState = new Tui(controller) {
+             def isPostGameState: Boolean = true
+          }
+          val result = tuiPostGameState.inputLoop()
+          result should be(false)
+        }
       }
     }
   }
