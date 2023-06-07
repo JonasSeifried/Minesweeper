@@ -80,7 +80,7 @@ class TuiSpec extends AnyWordSpec {
         Console.withOut(outputStream) {
           tui.processInput("l") should be(true)
           val consoleOutput = outputStream.toString
-          consoleOutput should include("Successfully loaded game")
+          consoleOutput.trim should include("successfully loaded game")
         }
       }
 
