@@ -7,17 +7,18 @@ class CoordinateManager {
 
   def decrypt(input: String): Option[(Int, Int)] = {
     val y = alphaToNum(input(0))
-    if (input.length == 2) {
+    if (input.length == 2)
       val res = Try(input.substring(1).toInt)
       if (res.isSuccess) Some(res.get, y)
-      else None
-    } else if (input.length == 3) {
+      else
+        None
+    else if (input.length == 3)
       val res = Try(input.substring(1).toInt)
       if (res.isSuccess) Some(res.get, y)
-      else None
-    } else {
+      else
+        None
+    else
       None
-    }
   }
   private def alphaToNum(char: Char): Int =
     chars.indexOf(char)
