@@ -13,6 +13,12 @@ class Gui(controller: Controller) extends Frame with Observer:
       contents += new MenuItem(Action("Exit") {
         controller.quit()
       })
+      contents += new MenuItem(Action("Save") {
+        controller.saveGame()
+      })
+      contents += new MenuItem(Action("Restore") {
+        controller.restoreGame()
+      })
     }
   }
 
@@ -25,7 +31,6 @@ class Gui(controller: Controller) extends Frame with Observer:
 
   private def updateContent() =
     new BorderPanel:
-      add(new Label("Minesweeper"), BorderPanel.Position.North)
       add(sideBar, BorderPanel.Position.West)
       add(gridCreate(controller.getRowSize, controller.getColSize), BorderPanel.Position.Center)
 
@@ -34,7 +39,11 @@ class Gui(controller: Controller) extends Frame with Observer:
       contents = updateContent()
       repaint()
     case Event.GameOver =>
-      this.dispose()
+      contents = updateContent()
+      if(controller.gameWon)
+        Dialog.showMessage(contents.head, "You won the game!",  title = "Won")
+      else
+        Dialog.showMessage(contents.head, "You lost the game",  title = "Game Over")
     case Event.Quit =>
       this.dispose()
 
@@ -68,40 +77,17 @@ class Gui(controller: Controller) extends Frame with Observer:
     controller.getTile(row, col).bombCount.toString
 
   private def sideBar: GridPanel =
-    new GridPanel(4, 1):
-      contents += undoButton
-      contents += redoButton
-      contents += saveButton
-      contents += restoreButton
-  private def undoButton: Button =
-    new Button("Undo"):
+    new GridPanel(3, 1):
+      contents += Button("Restart") { controller.renewField() }
+      contents += Button("Undo") { controller.undo }
+      contents += Button("Redo") { controller.redo }
+      border =  Swing.EmptyBorder(10, 10, 10, 10)
+
+  private def restartButton: Button =
+    new Button("Restart"):
       listenTo(mouse.clicks)
 
       reactions += {
         case MouseClicked(src, pt, mod, clicks, props) =>
-          controller.undo
-      }
-
-  private def redoButton: Button =
-    new Button("Redo"):
-      listenTo(mouse.clicks)
-      reactions += {
-        case MouseClicked(src, pt, mod, clicks, props) =>
-          controller.redo
-      }
-
-  private def saveButton: Button =
-    new Button("save Game"):
-      listenTo(mouse.clicks)
-      reactions += {
-        case MouseClicked(src, pt, mod, clicks, props) =>
-          controller.saveGame()
-      }
-
-  private def restoreButton: Button =
-    new Button("restore Game"):
-      listenTo(mouse.clicks)
-      reactions += {
-        case MouseClicked(src, pt, mod, clicks, props) =>
-          controller.restoreGame()
+          controller.renewField()
       }
