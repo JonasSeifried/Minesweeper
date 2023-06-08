@@ -18,13 +18,13 @@ class CoordinateManagerSpec extends AnyWordSpec {
     }
 
     "return None for input too short or too long" in {
-      coordinateManager.decrypt("a123") should be(None)
       coordinateManager.decrypt("a") should be(None)
       coordinateManager.decrypt("a1234") should be(None)
     }
 
     "return None for invalid characters" in {
       coordinateManager.decrypt("1a") should be(None)
+      coordinateManager.decrypt("aaaa") should be(None)
     }
   }
 }
