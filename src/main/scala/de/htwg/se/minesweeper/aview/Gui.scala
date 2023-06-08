@@ -8,19 +8,7 @@ import scala.swing.event.MouseClicked
 class Gui(controller: Controller) extends Frame with Observer:
   controller.add(this)
   title = "Minesweeper"
-  menuBar = new MenuBar {
-    contents += new Menu("File") {
-      contents += new MenuItem(Action("Exit") {
-        controller.quit()
-      })
-      contents += new MenuItem(Action("Save") {
-        controller.saveGame()
-      })
-      contents += new MenuItem(Action("Restore") {
-        controller.restoreGame()
-      })
-    }
-  }
+  menuBar = createMenuBar
 
   contents = updateContent()
 
@@ -46,6 +34,20 @@ class Gui(controller: Controller) extends Frame with Observer:
         Dialog.showMessage(contents.head, "You lost the game",  title = "Game Over")
     case Event.Quit =>
       this.dispose()
+
+  private def createMenuBar: MenuBar =
+    new MenuBar:
+      contents += new Menu("File") {
+        contents += new MenuItem(Action("Exit") {
+          controller.quit()
+        })
+        contents += new MenuItem(Action("Save") {
+          controller.saveGame()
+        })
+        contents += new MenuItem(Action("Restore") {
+          controller.restoreGame()
+        })
+    }
 
   private def gridCreate(rowSize: Int, colSize: Int): GridPanel =
     new GridPanel(rowSize, colSize):
