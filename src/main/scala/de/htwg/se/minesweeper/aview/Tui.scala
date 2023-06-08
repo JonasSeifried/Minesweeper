@@ -79,7 +79,7 @@ class Tui(controller: Controller) extends Observer {
           false
       }
 
-  private def openOrFlag(input: String, open: Boolean): Boolean =
+  def openOrFlag(input: String, open: Boolean): Boolean =
     if (input.length < 3 || input.length > 4) false
     else {
       coordManager.decrypt(input.substring(1)) match
