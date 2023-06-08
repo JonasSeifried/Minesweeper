@@ -5,8 +5,10 @@ import de.htwg.se.minesweeper.model.Difficulty.Easy
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
 import de.htwg.se.minesweeper.model.Field
-import java.io.{ByteArrayOutputStream, ByteArrayInputStream, PrintStream}
-import org.scalatest.matchers.should.Matchers._
+import de.htwg.se.minesweeper.util.Event
+
+import java.io.{ByteArrayInputStream, ByteArrayOutputStream, PrintStream}
+import org.scalatest.matchers.should.Matchers.*
 
 
 class TuiSpec extends AnyWordSpec {
@@ -146,9 +148,8 @@ class TuiSpec extends AnyWordSpec {
 
       val outputStreamGameWon = new ByteArrayOutputStream()
       Console.withOut(outputStreamGameWon) {
-        tuiGameWon.update()
+        tuiGameWon.update(Event.GameOver)
         val consoleOutputGameWon = outputStreamGameWon.toString
-        consoleOutputGameWon should include("Anzahl unentdeckter Felder: " + controllerGameWon.getCountOfUnopenedTiles)
         consoleOutputGameWon should include("Spiel gewonnen!")
       }
 
@@ -162,10 +163,9 @@ class TuiSpec extends AnyWordSpec {
 
       val outputStreamGameOver = new ByteArrayOutputStream()
       Console.withOut(outputStreamGameOver) {
-        tuiGameOver.update()
+        tuiGameOver.update(Event.GameOver)
 
         val consoleOutputGameOver = outputStreamGameOver.toString
-        consoleOutputGameOver should include("Anzahl unentdeckter Felder: " + controllerGameOver.getCountOfUnopenedTiles)
         consoleOutputGameOver should include("Spiel verloren!")
       }
     }
