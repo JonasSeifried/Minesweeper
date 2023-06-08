@@ -92,6 +92,7 @@ case class Controller(var field: Field) extends Observable {
     val newField = SaveManager.restoreGame()
     if (newField == null) return false
     field = newField
+    notifyObservers(Event.Move)
     true
 
   def saveGame(): Boolean =
