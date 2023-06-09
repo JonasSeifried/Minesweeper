@@ -17,6 +17,7 @@ class Tui(controller: Controller) extends Observer {
     case Event.GameOver =>
       if (controller.gameWon) println("Spiel gewonnen!")
       else if (controller.gameOver) println("Spiel verloren!")
+      running = false
     case Event.Quit => running = false
 
   def run(): Boolean =
