@@ -2,34 +2,59 @@ package de.htwg.se.minesweeper
 package controller
 
 import de.htwg.se.minesweeper.util.State.{PostGameState, PreGameState, State}
-import util.Observable
+import util.{Event, Observable, UndoManager}
 import model.{Field, FieldCreator, SaveManager, Tile}
 
 case class Controller(var field: Field) extends Observable {
+  private val undoManager = new UndoManager[Field]
   private val fieldCreator = new FieldCreator
   var state: State = PreGameState(this)
 
   def openTile(x: Int, y: Int): Boolean =
     if (isOutOfBounds(x, y)) false
     else {
-      field = field.openTile(x, y)
-      if(gameWon || gameOver) state = PostGameState(this)
-      notifyObservers()
+      field = undoManager.doStep(field, OpenCommand(x, y))
+      notifyObservers(Event.Move)
+      if(gameWon || gameOver)
+        state = PostGameState(this)
+        notifyObservers(Event.GameOver)
       true
     }
 
   def flagTile(x: Int, y: Int): Boolean =
     if (isOutOfBounds(x, y)) false
     else {
-      field = field.flagTile(x, y)
-      if(gameWon) state = PostGameState(this)
-      notifyObservers()
+      field = undoManager.doStep(field, FlagCommand(x, y))
+      notifyObservers(Event.Move)
+      if(gameWon)
+        state = PostGameState(this)
+        notifyObservers(Event.GameOver)
       true
     }
 
+  def undo: Boolean =
+    val oldField = field
+    field = undoManager.undoStep(field)
+    if (!(oldField eq field))
+      notifyObservers(Event.Move)
+      true
+    else
+      false
+
+  def redo: Boolean =
+    val oldField = field
+    field = undoManager.redoStep(field)
+    if (!(oldField eq field))
+      notifyObservers(Event.Move)
+      true
+    else
+      false
+
+  def quit(): Unit = notifyObservers(Event.Quit)
+
   def getTile(row: Int, col: Int): Tile =
-    if (isOutOfBounds(row, col)) null
-    else field.getTile(row, col)
+    if (isOutOfBounds(row, col)) return null
+    field.getTile(row, col)
 
   def getColSize: Int = field.colSize
 
@@ -38,6 +63,8 @@ case class Controller(var field: Field) extends Observable {
   def getTileIsHidden(row: Int, col: Int): Boolean = getTile(row, col).isHidden
 
   def getTileIsBomb(row: Int, col: Int): Boolean = getTile(row, col).isBomb
+
+  def getTileIsFlagged(row: Int, col: Int): Boolean = getTile(row, col).isFlagged
 
   def getCountOfUnopenedTiles: Int = state.getCountOfUnopenedTiles
 
@@ -53,7 +80,7 @@ case class Controller(var field: Field) extends Observable {
 
   def renewField(): Field = {
     field = fieldCreator.createField(new Field(field.rowSize, field.colSize, field.difficulty))
-    notifyObservers()
+    notifyObservers(Event.Move)
     field
   }
 
@@ -65,6 +92,7 @@ case class Controller(var field: Field) extends Observable {
     val newField = SaveManager.restoreGame()
     if (newField == null) return false
     field = newField
+    notifyObservers(Event.Move)
     true
 
   def saveGame(): Boolean =

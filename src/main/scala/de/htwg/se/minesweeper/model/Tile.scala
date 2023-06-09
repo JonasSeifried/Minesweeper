@@ -21,7 +21,3 @@ case class Tile(isBomb: Boolean, bombCount: Int, isHidden: Boolean, isFlagged: B
         else if (isBomb) "💣"
         else bombCountToString
 
-
-
-
-

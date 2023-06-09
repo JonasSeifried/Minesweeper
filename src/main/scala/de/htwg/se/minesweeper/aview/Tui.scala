@@ -1,22 +1,24 @@
 package de.htwg.se.minesweeper
 package aview
 
-import util.{CoordinateManager, Observer}
+import util.{CoordinateManager, Event, Observer}
 import controller.Controller
 import de.htwg.se.minesweeper.util.State.InGameState
 
 class Tui(controller: Controller) extends Observer {
   private val coordManager = new CoordinateManager
+  var running = true
   controller.add(this)
 
-  override def update(): Unit = {
-    println("Anzahl unentdeckter Felder: " + controller.getCountOfUnopenedTiles)
-    if(controller.isPostGameState)
+  override def update(e: Event): Unit = e match
+    case Event.Move =>
+      println("Anzahl unentdeckter Felder: " + controller.getCountOfUnopenedTiles)
       println(controller)
+    case Event.GameOver =>
       if (controller.gameWon) println("Spiel gewonnen!")
       else if (controller.gameOver) println("Spiel verloren!")
-
-  }
+      running = false
+    case Event.Quit => running = false
 
   def run(): Boolean =
     controller.state = InGameState(controller)
@@ -24,21 +26,21 @@ class Tui(controller: Controller) extends Observer {
     if (inputLoop()) true
     else false
 
-  private def inputLoop(): Boolean = {
-    val input = scala.io.StdIn.readLine
+  def inputLoop(): Boolean = {
+    val input = scala.io.StdIn.readLine.replaceAll(" ", "")
+    if (!running) return false
     if (processInput(input)) {
-      if(controller.isPostGameState) return false
-      println(controller)
+      if (controller.isPostGameState) return false
     }
-    if (input.isEmpty || input(0) != 'q') return inputLoop()
-    true
+    if (input.isEmpty) return false
+    inputLoop()
   }
 
   def processInput(input: String): Boolean =
     if (input.isEmpty) false
     else
       input(0) match {
-        case 'r' =>
+        case 'n' =>
           controller.renewField()
           true
         case 'o' =>
@@ -55,6 +57,7 @@ class Tui(controller: Controller) extends Observer {
           }
         case 'q' =>
           println("Thanks for playing!")
+          controller.quit()
           false
         case 's' =>
           if(controller.saveGame())
@@ -69,6 +72,10 @@ class Tui(controller: Controller) extends Observer {
           else
             println("Failed to load game")
             false
+        case 'r' =>
+          controller.redo
+        case 'u' =>
+          controller.undo
         case 'h' =>
           println(helpText)
           false
@@ -78,13 +85,13 @@ class Tui(controller: Controller) extends Observer {
       }
 
   private def openOrFlag(input: String, open: Boolean): Boolean =
-    if (input.length < 4 || input.length > 5) false
+    if (input.length < 3 || input.length > 4) false
     else {
-      val coords = coordManager.decrypt(input.substring(2))
-      if (open)
-        controller.openTile(coords._1, coords._2)
-      else
-        controller.flagTile(coords._1, coords._2)
+      coordManager.decrypt(input.substring(1)) match
+        case None => false
+        case Some(coords) =>
+          if (open) controller.openTile(coords._1, coords._2)
+          else controller.flagTile(coords._1, coords._2)
     }
 
   private val helpText =
@@ -94,7 +101,10 @@ class Tui(controller: Controller) extends Observer {
       |h              - Opens Minesweeper man
       |o [a-z0-99]    - Open a Tile
       |f [a-z0-99]    - Flag a Tile
-      |r              - Restart with a new Field
+      |n              - New Field
+      |r              - Redo last Command
+      |u              - Undo last Command
+      |n              - New Field
       |s              - Save your current game
       |l              - Load game
       |q              - Quit the game

@@ -5,7 +5,7 @@ import de.htwg.se.minesweeper.model.Difficulty.Difficulty
 import scala.util.Random
 
 case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializable {
-    private val chars = ('a' to 'z') ++ ('A' to 'Z')
+    private val chars= ('a' to 'z') ++ ('A' to 'Z')
     val rowSize: Int = tiles.rowSize
     val colSize: Int = tiles.colSize
 
@@ -18,18 +18,18 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializab
 
     def openTile(row: Int, col: Int): Field = {
         val oldTile = tiles.cell(row, col)
-        if (oldTile.isHidden && !oldTile.isFlagged) {
-            val newTiles = tiles.replaceCell(row, col, Tile(oldTile.isBomb, oldTile.bombCount, false, false))
-            if (oldTile.isBomb) {
-                Field(newTiles, difficulty)
-            } else {
-                val updatedField = updateEmptyTiles(row, col, newTiles, Set.empty)
-                Field(updatedField, difficulty)
-            }
-        } else {
-            this
-        }
+        if (!oldTile.isHidden || oldTile.isFlagged) return this
+        val newTiles = tiles.replaceCell(row, col, Tile(oldTile.isBomb, oldTile.bombCount, false, false))
+        if (oldTile.isBomb) return Field(newTiles, difficulty)
+
+        val updatedTiles = updateEmptyTiles(row, col, tiles)
+        Field(updatedTiles, difficulty)
     }
+
+    def closeTile(row: Int, col: Int): Field =
+        val oldTile = tiles.cell(row, col)
+        val newTiles = tiles.replaceCell(row, col, Tile(oldTile.isBomb, oldTile.bombCount, true, oldTile.isFlagged))
+        Field(newTiles, difficulty)
 
     def flagTile(row: Int, col: Int): Field = {
         val oldTile = tiles.cell(row, col)
@@ -57,36 +57,43 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializab
             }
         }
     }
+    private def updateEmptyTiles(row: Int, col: Int, tiles: Matrix[Tile]): Matrix[Tile] =
+        val tile = getTile(row, col)
+        updateEmptyTilesR(row, col, tiles, Set.empty)
 
-    private def updateEmptyTiles(row: Int, col: Int, field: Matrix[Tile], visited: Set[(Int, Int)]): Matrix[Tile] = {
-        if (row < 0 || row >= rowSize || col < 0 || col >= colSize || visited.contains((row, col))) {
-            field
-        } else {
-            val tile = field.cell(row, col)
-            if (tile.isHidden || tile.isFlagged || tile.isBomb) {
-                field
-            } else {
-                val updatedField = field.replaceCell(row, col, Tile(tile.isBomb, tile.bombCount, false, false))
-                val updatedVisited = visited + ((row, col))
-                val updatedField1 = updateEmptyTiles(row - 1, col, updatedField, updatedVisited)
-                val updatedField2 = updateEmptyTiles(row + 1, col, updatedField1, updatedVisited)
-                val updatedField3 = updateEmptyTiles(row, col - 1, updatedField2, updatedVisited)
-                updateEmptyTiles(row, col + 1, updatedField3, updatedVisited)
-            }
-        }
+
+
+    private def updateEmptyTilesR(row: Int, col: Int, tiles: Matrix[Tile], visited: Set[(Int, Int)]): Matrix[Tile] = {
+        if (row < 0 || row >= rowSize || col < 0 || col >= colSize || visited.contains((row, col))) return tiles
+        val tile = tiles.cell(row, col)
+        if (!tile.isHidden || tile.isFlagged || tile.isBomb) return tiles
+        var newTiles = tiles.replaceCell(row, col, Tile(tile.isBomb, tile.bombCount, false, false))
+        val updatedVisited = visited + ((row, col))
+        if(tile.bombCount != 0) return newTiles
+        for (i <- Math.max(row - 1, 0) to Math.min(row + 1, rowSize - 1)) do
+            for (j <- Math.max(col - 1, 0) to Math.min(col + 1, colSize - 1)) do
+            newTiles = updateEmptyTilesR(i, j, newTiles, updatedVisited)
+        newTiles
     }
+
 
     override def toString: String = {
         val sb = new StringBuilder()
         for ((row, row_idx) <- tiles.rows.zipWithIndex) {
+            if(row_idx < 10)
+                sb.append(" ")
             sb.append(row_idx)
+            sb.append(" ")
             for (tile <- row) {
                 sb.append(tile)
             }
             sb.append("\n")
         }
-        sb.append(" ")
+        sb.append("   ")
         for (i <- 0 until colSize) sb.append(" ").append(chars(i))
         sb.toString()
     }
+
+    def isTileFlagged(row: Int, col: Int): Boolean = tiles.cell(row, col).isFlagged
+
 }

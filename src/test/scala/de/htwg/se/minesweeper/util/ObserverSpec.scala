@@ -7,11 +7,11 @@ class ObserverSpec extends AnyWordSpec with Matchers {
   class TestObserver extends Observer {
     var updated = false
 
-    override def update(): Unit = updated = true
+    override def update(event: Event): Unit = updated = true
   }
 
   class TestObservable extends Observable {
-    def triggerUpdate(): Unit = notifyObservers()
+    def triggerUpdate(): Unit = notifyObservers(Event.Move)
   }
 
   "An Observable" should {
