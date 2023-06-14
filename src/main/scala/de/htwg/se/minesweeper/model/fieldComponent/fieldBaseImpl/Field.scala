@@ -1,13 +1,13 @@
-package de.htwg.se.minesweeper.model
+package de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl
 
 import de.htwg.se.minesweeper.model.Difficulty.Difficulty
+import de.htwg.se.minesweeper.model.fieldComponent.{FieldInterface, TileInterface}
 
 import scala.util.Random
 
-case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializable {
+case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends FieldInterface  {
     private val chars= ('a' to 'z') ++ ('A' to 'Z')
-    val rowSize: Int = tiles.rowSize
-    val colSize: Int = tiles.colSize
+    private val fieldCreator = new FieldCreator
 
     def this(sizeX: Int, sizeY: Int, difficulty: Difficulty) = {
         this(new Matrix[Tile](sizeX, sizeY, Tile(false, 0, true, false)), difficulty)
@@ -40,6 +40,14 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends Serializab
             this
         }
     }
+
+    def renewField: Field = fieldCreator.createField(rowSize, colSize, difficulty)
+    def rowSize: Int = tiles.rowSize
+    def colSize: Int = tiles.colSize
+
+    def getDifficulty: Difficulty = difficulty
+
+    def openBombExists: Boolean = tiles.rows.flatten.exists(tile => tile.isBomb && !tile.isHidden)
 
     def getTile(row: Int, col: Int): Tile = tiles.cell(row, col)
 
