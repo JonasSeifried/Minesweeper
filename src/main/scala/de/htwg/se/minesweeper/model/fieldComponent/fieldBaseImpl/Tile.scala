@@ -1,8 +1,10 @@
-package de.htwg.se.minesweeper.model
+package de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl
+
+import de.htwg.se.minesweeper.model.fieldComponent.TileInterface
 
 import scala.util.Random
 
-case class Tile(isBomb: Boolean, bombCount: Int, isHidden: Boolean, isFlagged: Boolean) extends Serializable:
+case class Tile(isBomb: Boolean, bombCount: Int, isHidden: Boolean, isFlagged: Boolean) extends TileInterface:
 
     private def bombCountToString =
         bombCount match
