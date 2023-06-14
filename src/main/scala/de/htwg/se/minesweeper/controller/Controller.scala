@@ -1,13 +1,13 @@
 package de.htwg.se.minesweeper
 package controller
 
+import de.htwg.se.minesweeper.model.fieldComponent.{FieldInterface, TileInterface}
 import de.htwg.se.minesweeper.util.State.{PostGameState, PreGameState, State}
 import util.{Event, Observable, UndoManager}
-import model.{Field, FieldCreator, SaveManager, Tile}
+import model.SaveManager
 
-case class Controller(var field: Field) extends Observable {
-  private val undoManager = new UndoManager[Field]
-  private val fieldCreator = new FieldCreator
+case class Controller(var field: FieldInterface) extends Observable {
+  private val undoManager = new UndoManager[FieldInterface]
   var state: State = PreGameState(this)
 
   def openTile(x: Int, y: Int): Boolean =
@@ -52,7 +52,7 @@ case class Controller(var field: Field) extends Observable {
 
   def quit(): Unit = notifyObservers(Event.Quit)
 
-  def getTile(row: Int, col: Int): Tile =
+  def getTile(row: Int, col: Int): TileInterface =
     if (isOutOfBounds(row, col)) return null
     field.getTile(row, col)
 
@@ -78,8 +78,8 @@ case class Controller(var field: Field) extends Observable {
 
   def isPostGameState: Boolean = state.isPostGameState
 
-  def renewField(): Field = {
-    field = fieldCreator.createField(new Field(field.rowSize, field.colSize, field.difficulty))
+  def renewField(): FieldInterface = {
+    field = field.renewField
     notifyObservers(Event.Move)
     field
   }
