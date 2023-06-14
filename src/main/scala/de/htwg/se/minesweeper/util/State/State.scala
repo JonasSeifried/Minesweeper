@@ -6,7 +6,7 @@ abstract class State(controller: Controller):
 
   def fieldToString: String
 
-  def gameOver: Boolean = controller.field.tiles.rows.flatten.exists(tile => tile.isBomb && !tile.isHidden)
+  def gameOver: Boolean = controller.field.openBombExists
 
   def gameWon: Boolean = !gameOver && getCountOfUnopenedTiles == 0
 
