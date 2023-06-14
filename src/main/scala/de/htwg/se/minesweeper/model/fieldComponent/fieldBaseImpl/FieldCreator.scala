@@ -1,12 +1,15 @@
-package de.htwg.se.minesweeper.model
+package de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl
+
+
+import de.htwg.se.minesweeper.model.Difficulty.Difficulty
+import de.htwg.se.minesweeper.model.fieldComponent.FieldCreatorInterface
 
 import scala.util.Random
 
-class FieldCreator {
+class FieldCreator:
 
-  def createField(field: Field): Field = {
-
-    updateTile(0, 0, updateTile(0, 0, field, false), true)
+  def createField(sizeX: Int, sizeY: Int, difficulty: Difficulty): Field = {
+    updateTile(0, 0, updateTile(0, 0, new Field(sizeX, sizeY, difficulty), false), true)
 
   }
 
@@ -33,5 +36,4 @@ class FieldCreator {
       for (j <- Math.max(col - 1, 0) to Math.min(col + 1, field.colSize-1)) do
         if ((i != row || j != col) && field.getTile(i, j).isBomb) c += 1
     c
-}
 
