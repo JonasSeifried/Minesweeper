@@ -1,8 +1,9 @@
 
 package de.htwg.se.minesweeper.model
 
+import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.Matrix
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers._
+import org.scalatest.matchers.should.Matchers.*
 
 class MatrixSpec extends AnyWordSpec {
   "A Matrix is a tailor-made immutable data type that contains a two-dimensional Vector of something. A Matrix" when {
