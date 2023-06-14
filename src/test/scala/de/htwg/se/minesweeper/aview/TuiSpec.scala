@@ -2,9 +2,9 @@ package de.htwg.se.minesweeper.aview
 
 import de.htwg.se.minesweeper.controller.Controller
 import de.htwg.se.minesweeper.model.Difficulty.Easy
+import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.Field
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
-import de.htwg.se.minesweeper.model.Field
 import de.htwg.se.minesweeper.util.Event
 
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream, PrintStream}

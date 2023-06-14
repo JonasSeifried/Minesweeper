@@ -1,6 +1,7 @@
 package de.htwg.se.minesweeper.controller
 
-import de.htwg.se.minesweeper.model.{Difficulty, Field, Tile}
+import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.{Field, Tile}
+import de.htwg.se.minesweeper.model.Difficulty
 import org.scalatest._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec

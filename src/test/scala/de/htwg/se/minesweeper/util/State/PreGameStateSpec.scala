@@ -3,8 +3,9 @@ package de.htwg.se.minesweeper.util.State
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers._
 import de.htwg.se.minesweeper.controller.Controller
-import de.htwg.se.minesweeper.model.Field
 import de.htwg.se.minesweeper.model.Difficulty.Easy
+import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.Field
+
 class PreGameStateSpec extends AnyWordSpec {
 
 "The default State should" when {

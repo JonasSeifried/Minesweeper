@@ -1,4 +1,4 @@
-package de.htwg.se.minesweeper.model
+package de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl
 
 case class Matrix[T](rows: Vector[Vector[T]]) extends Serializable:
   def this(sizeX: Int, sizeY: Int, filling: T) = this(Vector.tabulate(sizeX, sizeY) { (row, col) => filling })

@@ -2,8 +2,10 @@ package de.htwg.se.minesweeper.controller
 
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
-import de.htwg.se.minesweeper.model.{Field, Difficulty, Matrix, Tile}
+import de.htwg.se.minesweeper.model.Difficulty
 import de.htwg.se.minesweeper.controller.FlagCommand
+import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl
+import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.{Field, Matrix, Tile}
 
 class FlagCommandSpec extends AnyWordSpec with Matchers {
   "A FlagCommand" when {
@@ -11,7 +13,7 @@ class FlagCommandSpec extends AnyWordSpec with Matchers {
     val sizeX = 5
     val sizeY = 5
     val tiles = Matrix(Vector.tabulate(sizeX, sizeY)((_, _) => Tile(false, 0, true, false)))
-    val field = Field(tiles, difficulty)
+    val field = fieldBaseImpl.Field(tiles, difficulty)
     val x = 2
     val y = 3
     val flagCommand = new FlagCommand(x, y)

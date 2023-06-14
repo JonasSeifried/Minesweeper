@@ -3,7 +3,7 @@ package de.htwg.se.minesweeper.controller
 import de.htwg.se.minesweeper.model.Difficulty.Easy
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import de.htwg.se.minesweeper.model.{Field, Tile}
+import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.{Field, Tile}
 import de.htwg.se.minesweeper.util.State.InGameState
 import de.htwg.se.minesweeper.util.State.PostGameState
 
