@@ -1,11 +1,11 @@
 package de.htwg.se.minesweeper.aview
 
-import de.htwg.se.minesweeper.controller.Controller
+import de.htwg.se.minesweeper.controller.controllerComponent.ControllerInterface
 import de.htwg.se.minesweeper.util.{Event, Observer}
 
 import scala.swing.*
 import scala.swing.event.MouseClicked
-class Gui(controller: Controller) extends Frame with Observer:
+class Gui(controller: ControllerInterface) extends Frame with Observer:
   controller.add(this)
   title = "Minesweeper"
   menuBar = createMenuBar
@@ -42,10 +42,10 @@ class Gui(controller: Controller) extends Frame with Observer:
           controller.quit()
         })
         contents += new MenuItem(Action("Save") {
-          controller.saveGame()
+          controller.saveGame
         })
         contents += new MenuItem(Action("Restore") {
-          controller.restoreGame()
+          controller.restoreGame
         })
     }
 
@@ -80,7 +80,7 @@ class Gui(controller: Controller) extends Frame with Observer:
 
   private def sideBar: GridPanel =
     new GridPanel(3, 1):
-      contents += Button("Restart") { controller.renewField() }
+      contents += Button("Restart") { controller.renewField }
       contents += Button("Undo") { controller.undo }
       contents += Button("Redo") { controller.redo }
       border =  Swing.EmptyBorder(10, 10, 10, 10)
@@ -91,5 +91,5 @@ class Gui(controller: Controller) extends Frame with Observer:
 
       reactions += {
         case MouseClicked(src, pt, mod, clicks, props) =>
-          controller.renewField()
+          controller.renewField
       }
