@@ -1,9 +1,9 @@
 package de.htwg.se.minesweeper.controller
 
+import de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl.FlagCommand
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers
 import de.htwg.se.minesweeper.model.Difficulty
-import de.htwg.se.minesweeper.controller.FlagCommand
 import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl
 import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.{Field, Matrix, Tile}
 

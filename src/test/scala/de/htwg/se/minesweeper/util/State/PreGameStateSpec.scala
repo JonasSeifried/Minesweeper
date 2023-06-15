@@ -1,8 +1,8 @@
 package de.htwg.se.minesweeper.util.State
 
+import de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl.Controller
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers._
-import de.htwg.se.minesweeper.controller.Controller
 import de.htwg.se.minesweeper.model.Difficulty.Easy
 import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.Field
 

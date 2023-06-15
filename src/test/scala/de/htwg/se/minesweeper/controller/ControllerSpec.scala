@@ -1,5 +1,6 @@
 package de.htwg.se.minesweeper.controller
 
+import de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl.Controller
 import de.htwg.se.minesweeper.model.Difficulty.Easy
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec

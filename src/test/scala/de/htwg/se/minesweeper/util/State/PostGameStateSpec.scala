@@ -1,6 +1,6 @@
 package de.htwg.se.minesweeper.util.State
 
-import de.htwg.se.minesweeper.controller.Controller
+import de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl.Controller
 import de.htwg.se.minesweeper.model.Difficulty.Easy
 import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.{Field, Tile}
 import org.scalatest.matchers.should.Matchers.*
