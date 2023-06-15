@@ -58,7 +58,7 @@ class TuiSpec extends AnyWordSpec {
 
       "return false when input is 's' and game fails to save" in {
         val failingController = new Controller(field) {
-          override def saveGame(): Boolean = false
+          override def saveGame: Boolean = false
         }
         val tui = new Tui(failingController)
 
@@ -72,7 +72,7 @@ class TuiSpec extends AnyWordSpec {
 
       "return true when input is 'l' and game is successfully loaded" in {
         val successfulController = new Controller(field) {
-          override def restoreGame(): Boolean = true
+          override def restoreGame: Boolean = true
         }
         val tui = new Tui(successfulController)
 
@@ -86,7 +86,7 @@ class TuiSpec extends AnyWordSpec {
 
       "return false when input is 'l' and game fails to load" in {
         val failingController = new Controller(field) {
-          override def restoreGame(): Boolean = false
+          override def restoreGame: Boolean = false
         }
         val tui = new Tui(failingController)
 
