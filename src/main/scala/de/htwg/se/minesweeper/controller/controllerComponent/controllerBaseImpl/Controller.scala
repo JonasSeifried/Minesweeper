@@ -1,12 +1,13 @@
 package de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl
 
+import com.google.inject.Inject
 import de.htwg.se.minesweeper.controller.controllerComponent.ControllerInterface
 import de.htwg.se.minesweeper.model.SaveManager
 import de.htwg.se.minesweeper.model.fieldComponent.{FieldInterface, TileInterface}
 import de.htwg.se.minesweeper.util.State.{PostGameState, PreGameState, State}
 import de.htwg.se.minesweeper.util.{Event, Observable, UndoManager}
 
-case class Controller(var field: FieldInterface) extends ControllerInterface {
+case class Controller @Inject() (var field: FieldInterface) extends ControllerInterface {
   private val undoManager = new UndoManager[FieldInterface]
   var state: State = PreGameState(this)
 
