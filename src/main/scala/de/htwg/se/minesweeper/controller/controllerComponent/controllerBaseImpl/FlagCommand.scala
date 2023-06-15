@@ -1,9 +1,8 @@
-package de.htwg.se.minesweeper
-package controller
+package de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl
 
 import de.htwg.se.minesweeper.model.fieldComponent.FieldInterface
-import util.Command
-import util.UndoManager
+import de.htwg.se.minesweeper.util.Command
+
 
 
 class FlagCommand(x: Int, y: Int) extends Command[FieldInterface]:

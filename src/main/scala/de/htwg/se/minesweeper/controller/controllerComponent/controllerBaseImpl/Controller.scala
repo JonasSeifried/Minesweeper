@@ -1,12 +1,12 @@
-package de.htwg.se.minesweeper
-package controller
+package de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl
 
+import de.htwg.se.minesweeper.controller.controllerComponent.ControllerInterface
+import de.htwg.se.minesweeper.model.SaveManager
 import de.htwg.se.minesweeper.model.fieldComponent.{FieldInterface, TileInterface}
 import de.htwg.se.minesweeper.util.State.{PostGameState, PreGameState, State}
-import util.{Event, Observable, UndoManager}
-import model.SaveManager
+import de.htwg.se.minesweeper.util.{Event, Observable, UndoManager}
 
-case class Controller(var field: FieldInterface) extends Observable {
+case class Controller(var field: FieldInterface) extends ControllerInterface {
   private val undoManager = new UndoManager[FieldInterface]
   var state: State = PreGameState(this)
 
@@ -68,6 +68,13 @@ case class Controller(var field: FieldInterface) extends Observable {
 
   def getCountOfUnopenedTiles: Int = state.getCountOfUnopenedTiles
 
+  def getState: State = state
+
+  def setState(state: State): State =
+    val oldState = this.state
+    this.state = state
+    oldState
+
   def gameOver: Boolean = state.gameOver
 
   def gameWon: Boolean = state.gameWon
@@ -78,7 +85,7 @@ case class Controller(var field: FieldInterface) extends Observable {
 
   def isPostGameState: Boolean = state.isPostGameState
 
-  def renewField(): FieldInterface = {
+  def renewField: FieldInterface = {
     field = field.renewField
     notifyObservers(Event.Move)
     field
@@ -88,14 +95,14 @@ case class Controller(var field: FieldInterface) extends Observable {
     x >= getRowSize || x < 0 || y >= getColSize || y < 0
 
 
-  def restoreGame(): Boolean =
+  def restoreGame: Boolean =
     val newField = SaveManager.restoreGame()
     if (newField == null) return false
     field = newField
     notifyObservers(Event.Move)
     true
 
-  def saveGame(): Boolean =
+  def saveGame: Boolean =
     SaveManager.saveGame(field)
 
   override def toString: String = state.fieldToString
