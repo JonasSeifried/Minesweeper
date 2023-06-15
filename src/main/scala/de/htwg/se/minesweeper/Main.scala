@@ -1,8 +1,8 @@
 package de.htwg.se.minesweeper
 
 import aview.{Tui, Gui}
+import de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl.Controller
 import model.SaveManager
-import controller.Controller
 import de.htwg.se.minesweeper.model.Difficulty.{Easy, Hard}
 import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.Field
 
