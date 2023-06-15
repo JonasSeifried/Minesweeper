@@ -1,11 +1,11 @@
 package de.htwg.se.minesweeper
 package aview
 
+import de.htwg.se.minesweeper.controller.controllerComponent.ControllerInterface
 import util.{CoordinateManager, Event, Observer}
-import controller.Controller
 import de.htwg.se.minesweeper.util.State.InGameState
 
-class Tui(controller: Controller) extends Observer {
+class Tui(controller: ControllerInterface) extends Observer {
   private val coordManager = new CoordinateManager
   var running = true
   controller.add(this)
@@ -21,7 +21,7 @@ class Tui(controller: Controller) extends Observer {
     case Event.Quit => running = false
 
   def run(): Boolean =
-    controller.state = InGameState(controller)
+    controller.setState(InGameState(controller))
     println(controller)
     if (inputLoop()) true
     else false
@@ -41,7 +41,7 @@ class Tui(controller: Controller) extends Observer {
     else
       input(0) match {
         case 'n' =>
-          controller.renewField()
+          controller.renewField
           true
         case 'o' =>
           if (openOrFlag(input, true)) true
@@ -60,13 +60,13 @@ class Tui(controller: Controller) extends Observer {
           controller.quit()
           false
         case 's' =>
-          if(controller.saveGame())
+          if(controller.saveGame)
             println("Game Saved!")
             return false
           println("Couldn't save Game")
           false
         case 'l' =>
-          if (controller.restoreGame())
+          if (controller.restoreGame)
             println("successfully loaded game")
             true
           else
