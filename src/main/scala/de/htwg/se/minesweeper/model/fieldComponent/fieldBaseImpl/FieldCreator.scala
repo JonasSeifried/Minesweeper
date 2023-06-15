@@ -2,7 +2,6 @@ package de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl
 
 
 import de.htwg.se.minesweeper.model.Difficulty.Difficulty
-import de.htwg.se.minesweeper.model.fieldComponent.FieldCreatorInterface
 
 import scala.util.Random
 
