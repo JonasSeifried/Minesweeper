@@ -7,7 +7,6 @@ import scala.util.Random
 
 case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends FieldInterface  {
     private val chars= ('a' to 'z') ++ ('A' to 'Z')
-    private val fieldCreator = new FieldCreator
 
     def this(sizeX: Int, sizeY: Int, difficulty: Difficulty) = {
         this(new Matrix[Tile](sizeX, sizeY, Tile(false, 0, true, false)), difficulty)
@@ -41,7 +40,7 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends FieldInter
         }
     }
 
-    def renewField: Field = fieldCreator.createField(rowSize, colSize, difficulty)
+    def renewField: Field = FieldCreator().createField(rowSize, colSize, difficulty)
     def rowSize: Int = tiles.rowSize
     def colSize: Int = tiles.colSize
 
