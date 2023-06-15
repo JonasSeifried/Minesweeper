@@ -1,9 +1,8 @@
-package de.htwg.se.minesweeper.model
+package de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl
 
 import de.htwg.se.minesweeper.model.Difficulty.Easy
-import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.{Field, Tile}
-import org.scalatest.wordspec.AnyWordSpec
 import org.scalatest.matchers.should.Matchers.*
+import org.scalatest.wordspec.AnyWordSpec
 
 class FieldSpec extends AnyWordSpec {
   "A Minesweeper Field" when {

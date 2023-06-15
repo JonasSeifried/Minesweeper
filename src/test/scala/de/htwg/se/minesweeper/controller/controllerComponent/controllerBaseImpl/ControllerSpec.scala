@@ -1,12 +1,11 @@
-package de.htwg.se.minesweeper.controller
+package de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl
 
 import de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl.Controller
 import de.htwg.se.minesweeper.model.Difficulty.Easy
+import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.{Field, Tile}
+import de.htwg.se.minesweeper.util.State.{InGameState, PostGameState}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.{Field, Tile}
-import de.htwg.se.minesweeper.util.State.InGameState
-import de.htwg.se.minesweeper.util.State.PostGameState
 
 class ControllerSpec extends AnyWordSpec with Matchers {
 
@@ -19,7 +18,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         controller = Some(Controller(field))
         controller.foreach { c =>
           c.state = InGameState(c)
-          val newField = c.renewField()
+          val newField = c.renewField
           newField should not be field
           newField.rowSize should be(field.rowSize)
           newField.colSize should be(field.colSize)
@@ -38,7 +37,8 @@ class ControllerSpec extends AnyWordSpec with Matchers {
 
       "get if a Tile is a Bomb" in
         controller.foreach { c =>
-          c.field = c.field.replaceTile(0,0, Tile(true, 0, false, false))
+          c.field match
+            case field: Field => c.field = field.replaceTile(0,0, Tile(true, 0, false, false))
           c.getTileIsBomb(0,0) should be (true)
         }
 
@@ -50,12 +50,12 @@ class ControllerSpec extends AnyWordSpec with Matchers {
 
       "saving and restoring" should {
         "saving the game" in {
-          controller.foreach(c => c.saveGame() should be(true))
+          controller.foreach(c => c.saveGame should be(true))
         }
         "restore game" in {
           controller.foreach { c =>
             val field = c.field
-            c.restoreGame()
+            c.restoreGame
             c.field should be(field)
           }
         }
@@ -63,7 +63,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
 
       "set the state to PostGameState when the game is won" in {
         var gameWon = true
-        import scala.util.control.Breaks._
+        import scala.util.control.Breaks.*
         controller.foreach { c =>
           c.state = InGameState(c)
           breakable {

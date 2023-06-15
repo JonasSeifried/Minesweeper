@@ -1,8 +1,8 @@
-package de.htwg.se.minesweeper.controller
+package de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl
 
 import de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl.OpenCommand
-import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.{Field, Tile}
 import de.htwg.se.minesweeper.model.Difficulty
+import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.{Field, Tile}
 import org.scalatest.*
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec

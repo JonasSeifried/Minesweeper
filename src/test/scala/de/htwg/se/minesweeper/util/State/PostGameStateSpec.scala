@@ -12,7 +12,8 @@ class PostGameStateSpec extends AnyWordSpec {
 
   val field = new Field(10, 10, Easy)
   val controller = Controller(field)
-  controller.field = controller.field.replaceTile(0,0, Tile(true, 0, false, false))
+  controller.field match
+    case field: Field => controller.field = field.replaceTile(0,0, Tile(true, 0, false, false))
   controller.state = PostGameState(controller)
   "methods" should {
     "printed the Field with the toString-Methode" in {

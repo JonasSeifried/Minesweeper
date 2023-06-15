@@ -1,11 +1,11 @@
-package de.htwg.se.minesweeper.controller
+package de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl
 
 import de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl.FlagCommand
-import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers
 import de.htwg.se.minesweeper.model.Difficulty
 import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl
 import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.{Field, Matrix, Tile}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpec
 
 class FlagCommandSpec extends AnyWordSpec with Matchers {
   "A FlagCommand" when {

@@ -17,7 +17,7 @@ class TuiSpec extends AnyWordSpec {
   val tui = new Tui(controller)
     "processing input" should {
       "renew the field when input is 'n'" in {
-        val initialField = controller.field.copy()
+        val initialField = controller.field
         tui.processInput("n")
         controller.field should not be initialField
       }
