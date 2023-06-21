@@ -2,7 +2,6 @@ package de.htwg.se.minesweeper
 
 import aview.{Gui, Tui}
 import com.google.inject.Guice
-import model.SaveManager
 import de.htwg.se.minesweeper.model.Difficulty.{Easy, Hard}
 import de.htwg.se.minesweeper.controller.controllerComponent.ControllerInterface
 

@@ -3,7 +3,6 @@ package de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl
 import com.google.inject.{Guice, Inject}
 import de.htwg.se.minesweeper.MinesweeperModule
 import de.htwg.se.minesweeper.controller.controllerComponent.ControllerInterface
-import de.htwg.se.minesweeper.model.SaveManager
 import de.htwg.se.minesweeper.model.fieldComponent.{FieldInterface, TileInterface}
 import de.htwg.se.minesweeper.model.fileIO.FileIOInterface
 import de.htwg.se.minesweeper.util.State.{PostGameState, PreGameState, State}
