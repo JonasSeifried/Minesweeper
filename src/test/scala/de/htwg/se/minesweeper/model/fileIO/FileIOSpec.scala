@@ -44,6 +44,16 @@ class FileIOSpec extends AnyWordSpec with Matchers {
       loadedField.colSize should be(smallField.colSize)
     }
 
+    "load a field of size 10 correctly" in {
+      val smallField = new Field(10, 10, Easy)
+      fileIO.save(smallField)
+
+      val loadedField = fileIO.load
+      loadedField should not be null
+      loadedField.rowSize should be(smallField.rowSize)
+      loadedField.colSize should be(smallField.colSize)
+    }
+
     "load a field of size 15 correctly" in {
       val bigField = new Field(15, 15, Easy)
       fileIO.save(bigField)
