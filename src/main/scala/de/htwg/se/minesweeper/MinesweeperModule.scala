@@ -11,6 +11,7 @@ import de.htwg.se.minesweeper.model.fieldComponent.fieldAdvancedImpl.Field
 import de.htwg.se.minesweeper.model.fileIO.FileIOInterface
 import de.htwg.se.minesweeper.model.fileIO.fileIOXmlImpl.FileIO as FileIOXml
 import de.htwg.se.minesweeper.model.fileIO.fileIOBytesImpl.FileIO as FileIOBytes
+import de.htwg.se.minesweeper.model.fileIO.fileIOJsonImpl.FileIO as FileIOJson
 
 class MinesweeperModule extends AbstractModule with ScalaModule:
   private val small = 5
@@ -25,4 +26,4 @@ class MinesweeperModule extends AbstractModule with ScalaModule:
 
     bind[FieldInterface].to[Field]
     bind[ControllerInterface].to[Controller]
-    bind[FileIOInterface].to[FileIOBytes]
+    bind[FileIOInterface].to[FileIOJson]
