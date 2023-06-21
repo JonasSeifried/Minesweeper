@@ -11,6 +11,8 @@ trait FieldInterface extends Serializable:
 
   def flagTile(row: Int, col: Int): FieldInterface
 
+  def setTile(row: Int, col: Int, isBomb: Boolean, bombCount: Int, isHidden: Boolean, isFlagged: Boolean): FieldInterface
+
   def renewField: FieldInterface
 
   def getTile(row: Int, col: Int): TileInterface

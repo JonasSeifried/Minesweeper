@@ -15,6 +15,8 @@ case class Field(tiles: Matrix[Tile], difficulty: Difficulty) extends FieldInter
 
     def replaceTile(row: Int, col: Int, tile: Tile): Field = Field(tiles.replaceCell(row, col, tile), difficulty)
 
+    def setTile(row:  Int, col:  Int, isBomb:  Boolean, bombCount:  Int, isHidden:  Boolean, isFlagged:  Boolean): Field =
+        replaceTile(row, col, Tile(isBomb, bombCount, isHidden, isFlagged))
     def openTile(row: Int, col: Int): Field = {
         val oldTile = tiles.cell(row, col)
         if (!oldTile.isHidden || oldTile.isFlagged) return this
