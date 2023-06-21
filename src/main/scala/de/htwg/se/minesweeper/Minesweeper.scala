@@ -11,6 +11,7 @@ import scala.io.StdIn.readLine
 object Minesweeper:
   private val injector = Guice.createInjector(new MinesweeperModule)
   val controller: ControllerInterface = injector.getInstance(classOf[ControllerInterface])
+  controller.renewField
 
   @main def main(): Unit =
     println("Hello world my project is Minesweeper!")
