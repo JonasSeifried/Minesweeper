@@ -22,7 +22,11 @@ class FileIO extends FileIOInterface:
     res.isSuccess
 
   override def load: FieldInterface =
-    val file = scala.xml.XML.loadFile("gameData.xml")
+    val res = Try(scala.xml.XML.loadFile("gameData.xml"))
+    if (res.isFailure)
+      return null
+
+    val file = res.get
     val size = (file \\ "field" \ "@size").text.toInt
     val injector = Guice.createInjector(new MinesweeperModule)
 
@@ -46,10 +50,11 @@ class FileIO extends FileIOInterface:
   private def fieldToXml(field: FieldInterface) =
     <field size={ field.rowSize.toString }>
       {
-      for {
+      for
         row <- 0 until field.rowSize
-        col <- 0 until field.colSize
-      } yield tileToXml(field, row, col)
+        col <- 0 until field.rowSize
+      yield
+        tileToXml(field, row, col)
       }
     </field>
 

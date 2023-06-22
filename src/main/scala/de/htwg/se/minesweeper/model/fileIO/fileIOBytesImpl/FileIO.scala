@@ -18,7 +18,10 @@ class FileIO extends FileIOInterface:
 
 
   override def load: FieldInterface =
-    val fileStream = new FileInputStream("gameData")
+    val res = Try(new FileInputStream("gameData"))
+    if (res.isFailure)
+      return null
+    val fileStream = res.get
     val objStream = new ObjectInputStream(fileStream)
     val result = Try(objStream.readObject().asInstanceOf[FieldInterface])
     fileStream.close()
