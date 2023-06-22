@@ -5,9 +5,9 @@ import de.htwg.se.minesweeper.controller.controllerComponent.ControllerInterface
 import util.{CoordinateManager, Event, Observer}
 import de.htwg.se.minesweeper.util.State.InGameState
 
-class Tui(controller: ControllerInterface) extends Observer {
+class Tui(controller: ControllerInterface) extends Observer:
   private val coordManager = new CoordinateManager
-  var running = true
+  private var running = true
   controller.add(this)
 
   override def update(e: Event): Unit = e match
@@ -26,73 +26,67 @@ class Tui(controller: ControllerInterface) extends Observer {
     if (inputLoop()) true
     else false
 
-  def inputLoop(): Boolean = {
+  def inputLoop(): Boolean =
     val input = scala.io.StdIn.readLine.replaceAll(" ", "")
     if (!running) return false
-    if (processInput(input)) {
+    if (processInput(input))
       if (controller.isPostGameState) return false
-    }
     if (input.isEmpty) return false
     inputLoop()
-  }
 
   def processInput(input: String): Boolean =
-    if (input.isEmpty) false
-    else
-      input(0) match {
-        case 'n' =>
-          controller.renewField
+    if (input.isEmpty) return false
+    input(0) match
+      case 'n' =>
+        controller.renewField
+        true
+      case 'o' =>
+        if (openOrFlag(input, true)) true
+        else
+          println("Wrong usage of the open command")
+          false
+      case 'f' =>
+        if (openOrFlag(input, false)) true
+        else
+          println("Wrong usage of the flag command")
+          false
+      case 'q' =>
+        println("Thanks for playing!")
+        controller.quit()
+        false
+      case 's' =>
+        if (controller.saveGame)
+          println("Game Saved!")
+          return false
+        println("Couldn't save Game")
+        false
+      case 'l' =>
+        if (controller.restoreGame)
+          println("successfully loaded game")
           true
-        case 'o' =>
-          if (openOrFlag(input, true)) true
-          else {
-            println("Wrong usage of the open command")
-            false
-          }
-        case 'f' =>
-          if (openOrFlag(input, false)) true
-          else {
-            println("Wrong usage of the flag command")
-            false
-          }
-        case 'q' =>
-          println("Thanks for playing!")
-          controller.quit()
+        else
+          println("Failed to load game")
           false
-        case 's' =>
-          if(controller.saveGame)
-            println("Game Saved!")
-            return false
-          println("Couldn't save Game")
-          false
-        case 'l' =>
-          if (controller.restoreGame)
-            println("successfully loaded game")
-            true
-          else
-            println("Failed to load game")
-            false
-        case 'r' =>
-          controller.redo
-        case 'u' =>
-          controller.undo
-        case 'h' =>
-          println(helpText)
-          false
-        case _ =>
-          println("Unknown command")
-          false
-      }
+      case 'r' =>
+        controller.redo
+      case 'u' =>
+        controller.undo
+      case 'h' =>
+        println(helpText)
+        false
+      case _ =>
+        println("Unknown command")
+        false
 
   private def openOrFlag(input: String, open: Boolean): Boolean =
-    if (input.length < 3 || input.length > 4) false
-    else {
-      coordManager.decrypt(input.substring(1)) match
-        case None => false
-        case Some(coords) =>
-          if (open) controller.openTile(coords._1, coords._2)
-          else controller.flagTile(coords._1, coords._2)
-    }
+    if (input.length < 3 || input.length > 4) return false
+    coordManager.decrypt(input.substring(1)) match
+      case None => false
+      case Some(coords) =>
+        if (open)
+          controller.openTile(coords._1, coords._2)
+        else
+          controller.flagTile(coords._1, coords._2)
 
   private val helpText =
     """
@@ -110,5 +104,4 @@ class Tui(controller: ControllerInterface) extends Observer {
       |q              - Quit the game
       |-----------------------------------------
       |""".stripMargin
-}
 
