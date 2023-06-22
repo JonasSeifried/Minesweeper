@@ -54,9 +54,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         }
         "restore game" in {
           controller.foreach { c =>
-            val field = c.field
-            c.restoreGame
-            c.field should be(field)
+            c.restoreGame should be(true)
           }
         }
       }
