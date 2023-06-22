@@ -102,16 +102,30 @@ class TuiSpec extends AnyWordSpec {
         tui.processInput("csad") should be(false)
       }
     }
-    "undo and redo" should {
+
+  "undo and redo" should {
+    val controller = new Controller(field)
+    val tui = new Tui(controller)
+
+    "return true when input is 'u' and undo is successful" in {
       tui.processInput("ob1")
-      "return true when input is 'u' and undo is successful" in {
-        tui.processInput("u") should be(true)
-      }
-      "return true when input is 'r' and redo is successful" in {
-        tui.processInput("u")
-        tui.processInput("r") should be(true)
-      }
+      tui.processInput("u") should be(true)
     }
+    "return false when input is 'u' and undo is not possible" in {
+      tui.processInput("u") should be(false)
+    }
+
+    "return true when input is 'r' and redo is successful" in {
+      tui.processInput("ob1")
+      tui.processInput("u")
+      tui.processInput("r") should be(true)
+    }
+    "return false when redo is not successful" in {
+      tui.processInput("ob1")
+      tui.processInput("r") should be(false)
+    }
+  }
+
 
     "run() method" should {
       "return true if inputLoop() returns true" in {
