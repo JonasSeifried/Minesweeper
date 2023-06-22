@@ -34,7 +34,7 @@ jobs:
           distribution: 'temurin'
           cache: 'sbt'
       - name: Run Tests
-        run: sbt coverageReport
+        run: sbt coverageAggregate
       - name: Upload Coverage Report
         env:
             COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
