@@ -1,13 +1,13 @@
 package de.htwg.se.minesweeper.model.fileIO
 
-import de.htwg.se.minesweeper.model.Difficulty._
+import de.htwg.se.minesweeper.model.Difficulty.*
 import de.htwg.se.minesweeper.model.fieldComponent.FieldInterface
 import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.Field
+import de.htwg.se.minesweeper.model.fileIO.fileIOJsonImpl.FileIO
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import de.htwg.se.minesweeper.model.fileIO.fileIOXmlImpl.FileIO
 
-class FileIOSpec extends AnyWordSpec with Matchers {
+class FileIOJsonSpec extends AnyWordSpec with Matchers:
   val fileIO = new FileIO
   val testField: FieldInterface = new Field(10, 10, Easy)
 
@@ -64,4 +64,3 @@ class FileIOSpec extends AnyWordSpec with Matchers {
       loadedField.colSize should be(bigField.colSize)
     }
   }
-}

@@ -4,7 +4,7 @@ import de.htwg.se.minesweeper.model.Difficulty.Easy
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
 
-class FieldSpec extends AnyWordSpec {
+class FieldSpec extends AnyWordSpec:
   "A Minesweeper Field" when {
     "Filled with 3x3 Hidden Tiles" should {
       val field3x3 = new Field(3, 3, Easy)
@@ -34,6 +34,9 @@ class FieldSpec extends AnyWordSpec {
         val field2x2 = new Field(2, 2, Easy).replaceTile(0, 0, Tile(true, 0, false, false))
         field2x2.toString should be("0💣⬜\n1⬜⬜\n  a b")
       }*/
+      "get difficulty" in {
+        field3x3.getDifficulty should be(field3x3.difficulty)
+      }
 
       "get count of unopened tiles" in {
         field3x3.getCountOfUnopenedTiles should be(9)
@@ -54,4 +57,3 @@ class FieldSpec extends AnyWordSpec {
       }
     }
   }
-}

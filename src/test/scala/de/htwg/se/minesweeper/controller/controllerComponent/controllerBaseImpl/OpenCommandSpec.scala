@@ -7,7 +7,7 @@ import org.scalatest.*
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-class OpenCommandSpec extends AnyWordSpec with Matchers {
+class OpenCommandSpec extends AnyWordSpec with Matchers:
   "An OpenCommand" when {
     "executed on a Field" should {
       val sizeX = 5
@@ -34,4 +34,3 @@ class OpenCommandSpec extends AnyWordSpec with Matchers {
       }
     }
   }
-}

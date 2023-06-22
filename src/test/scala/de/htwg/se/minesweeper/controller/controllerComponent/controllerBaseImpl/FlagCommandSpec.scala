@@ -7,7 +7,7 @@ import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.{Field, Matrix,
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-class FlagCommandSpec extends AnyWordSpec with Matchers {
+class FlagCommandSpec extends AnyWordSpec with Matchers:
   "A FlagCommand" when {
     val difficulty = Difficulty.Easy
     val sizeX = 5
@@ -45,4 +45,3 @@ class FlagCommandSpec extends AnyWordSpec with Matchers {
       }
     }
   }
-}
