@@ -42,19 +42,25 @@ class Gui(controller: ControllerInterface) extends Frame with Observer:
           controller.quit()
         })
         contents += new MenuItem(Action("Save") {
-          controller.saveGame
+          if (controller.saveGame)
+            Dialog.showMessage(null, "Game Saved", title = "Save")
+          else
+            Dialog.showMessage(null, "Could not save the game", title = "Error")
+
         })
         contents += new MenuItem(Action("Restore") {
-          controller.restoreGame
+          if (!controller.restoreGame)
+            Dialog.showMessage(null, "Could not restore Game", title = "Error")
         })
     }
 
   private def gridCreate(rowSize: Int, colSize: Int): GridPanel =
     new GridPanel(rowSize, colSize):
-      (for (
-        x <- 0 until rowSize;
+      for
+        x <- 0 until rowSize
         y <- 0 until colSize
-      ) yield (x, y)).foreach(t => contents += btnCreate(t._1, t._2))
+      do
+        contents += btnCreate(x, y)
 
   private def btnCreate(row: Int, col: Int): Button =
     new Button(tileToString(row, col)):
