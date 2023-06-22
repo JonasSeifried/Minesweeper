@@ -1,9 +1,9 @@
-package de.htwg.se.minesweeper.model
+package de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl
 
+import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers._
 
-class TileSpec extends AnyWordSpec {
+class TileSpec extends AnyWordSpec:
   "A Tile" when {
     "Hidden and not Flagged" should {
       val tileBH = Tile(true, 0, true, false)
@@ -20,7 +20,7 @@ class TileSpec extends AnyWordSpec {
     "Bomb, not Hidden" should {
       val tileB = Tile(true, 0, false, false)
       "Should be a Bomb as a String" in {
-        tileB.toString should be ("💣")
+        tileB.toString should be("💣")
       }
     }
     "Not Bomb and not Hidden" should {
@@ -81,4 +81,3 @@ class TileSpec extends AnyWordSpec {
 
     }
   }
-}

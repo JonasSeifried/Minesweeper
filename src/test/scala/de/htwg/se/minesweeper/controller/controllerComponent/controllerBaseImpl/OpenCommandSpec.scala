@@ -1,11 +1,13 @@
-package de.htwg.se.minesweeper.controller
+package de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.minesweeper.model.{Difficulty, Field, Tile}
-import org.scalatest._
+import de.htwg.se.minesweeper.controller.controllerComponent.controllerBaseImpl.OpenCommand
+import de.htwg.se.minesweeper.model.Difficulty
+import de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl.{Field, Tile}
+import org.scalatest.*
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-class OpenCommandSpec extends AnyWordSpec with Matchers {
+class OpenCommandSpec extends AnyWordSpec with Matchers:
   "An OpenCommand" when {
     "executed on a Field" should {
       val sizeX = 5
@@ -32,4 +34,3 @@ class OpenCommandSpec extends AnyWordSpec with Matchers {
       }
     }
   }
-}

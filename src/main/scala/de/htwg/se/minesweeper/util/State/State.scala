@@ -1,12 +1,12 @@
 package de.htwg.se.minesweeper.util.State
 
-import de.htwg.se.minesweeper.controller.Controller
+import de.htwg.se.minesweeper.controller.controllerComponent.ControllerInterface
 
-abstract class State(controller: Controller):
+abstract class State(controller: ControllerInterface):
 
   def fieldToString: String
 
-  def gameOver: Boolean = controller.field.tiles.rows.flatten.exists(tile => tile.isBomb && !tile.isHidden)
+  def gameOver: Boolean = controller.field.openBombExists
 
   def gameWon: Boolean = !gameOver && getCountOfUnopenedTiles == 0
 

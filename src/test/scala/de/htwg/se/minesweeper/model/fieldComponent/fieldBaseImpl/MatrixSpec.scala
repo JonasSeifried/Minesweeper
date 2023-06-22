@@ -1,10 +1,10 @@
 
-package de.htwg.se.minesweeper.model
+package de.htwg.se.minesweeper.model.fieldComponent.fieldBaseImpl
 
+import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest.matchers.should.Matchers._
 
-class MatrixSpec extends AnyWordSpec {
+class MatrixSpec extends AnyWordSpec:
   "A Matrix is a tailor-made immutable data type that contains a two-dimensional Vector of something. A Matrix" when {
     "empty " should {
       "be created by using a dimension and a sample cell" in {
@@ -38,4 +38,3 @@ class MatrixSpec extends AnyWordSpec {
     }
   }
 
-}
