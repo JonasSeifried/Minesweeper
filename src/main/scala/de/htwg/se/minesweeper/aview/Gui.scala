@@ -18,6 +18,10 @@ class Gui(controller: ControllerInterface) extends Frame with Observer:
   centerOnScreen()
   open()
 
+  override def closeOperation(): Unit =
+    controller.quit()
+    super.closeOperation()
+
   private def updateContent() =
     new BorderPanel:
       add(sideBar, BorderPanel.Position.West)
