@@ -30,9 +30,11 @@ trait FieldInterface extends Serializable:
   def getCountOfUnopenedTiles: Int
 
 
-
 trait TileInterface extends Serializable:
   def isBomb: Boolean
+
   def bombCount: Int
+
   def isHidden: Boolean
+
   def isFlagged: Boolean

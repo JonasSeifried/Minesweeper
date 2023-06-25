@@ -14,16 +14,21 @@ import scala.util.Try
 class FileIO extends FileIOInterface:
 
   override def load: FieldInterface =
-    val source = Source.fromFile("gameData.json")
+    val res = Try(Source.fromFile("gameData.json"))
+    if (res.isFailure)
+      return null
+    val source = res.get
     val data = source.getLines.mkString
     source.close()
     val json: JsValue = Json.parse(data)
     val size = (json \ "field" \ "size").get.toString.toInt
+
     val injector = Guice.createInjector(new MinesweeperModule)
     var field = size match
       case 5 => injector.instance[FieldInterface](Names.named("small"))
       case 10 => injector.instance[FieldInterface](Names.named("normal"))
       case 15 => injector.instance[FieldInterface](Names.named("big"))
+
     for (index <- 0 until size * size)
       val row = (json \\ "row")(index).as[Int]
       val col = (json \\ "col")(index).as[Int]

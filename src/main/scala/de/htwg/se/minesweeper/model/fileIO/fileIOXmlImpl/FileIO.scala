@@ -22,7 +22,11 @@ class FileIO extends FileIOInterface:
     res.isSuccess
 
   override def load: FieldInterface =
-    val file = scala.xml.XML.loadFile("gameData.xml")
+    val res = Try(scala.xml.XML.loadFile("gameData.xml"))
+    if (res.isFailure)
+      return null
+
+    val file = res.get
     val size = (file \\ "field" \ "@size").text.toInt
     val injector = Guice.createInjector(new MinesweeperModule)
 
@@ -31,7 +35,7 @@ class FileIO extends FileIOInterface:
       case 10 => injector.instance[FieldInterface](Names.named("normal"))
       case 15 => injector.instance[FieldInterface](Names.named("big"))
 
-    val tiles = (file \\ "tile")
+    val tiles = file \\ "tile"
     for (tile <- tiles) {
       val row = (tile \ "@row").text.toInt
       val col = (tile \ "@col").text.toInt
@@ -44,22 +48,23 @@ class FileIO extends FileIOInterface:
     field
 
   private def fieldToXml(field: FieldInterface) =
-    <field size={ field.rowSize.toString }>
+    <field size={field.rowSize.toString}>
       {
-      for {
-        row <- 0 until field.rowSize
-        col <- 0 until field.colSize
-      } yield tileToXml(field, row, col)
+      for
+      row <- 0 until field.rowSize
+      col <- 0 until field.rowSize
+    yield
+      tileToXml(field, row, col)
       }
     </field>
 
   private def tileToXml(field: FieldInterface, row: Int, col: Int) =
     val tile = field.getTile(row, col)
-    <tile
-    row={ row.toString }
-    col={ col.toString }
-    bombCount = { tile.bombCount.toString }
-    isBomb = { tile.isBomb.toString }
-    isFlagged = { tile.isFlagged.toString }
-    isHidden = { tile.isHidden.toString }
-    />
+      <tile
+      row={row.toString}
+      col={col.toString}
+      bombCount={tile.bombCount.toString}
+      isBomb={tile.isBomb.toString}
+      isFlagged={tile.isFlagged.toString}
+      isHidden={tile.isHidden.toString}
+      />
