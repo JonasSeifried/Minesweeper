@@ -6,7 +6,7 @@
 ### This Project was made for the lecture Software Engineering at [Htwg Konstanz](https://www.htwg-konstanz.de/).
 Made in collaboration with [Berrak Uzun](https://github.com/berrakuzun).
 
-![Minesweeper](img_1.png)
+![img.png](img.png)
 
 This is a command-line implementation of the classic game Minesweeper, written in [Scala](https://scala-lang.org/). The objective of the game is to clear the minefield without detonating any mines.
 
