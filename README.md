@@ -45,13 +45,11 @@ To run the Minesweeper game, you need to have Scala and sbt (Scala Build Tool) i
 
 ## Controls
 
-The game is played using the command-line interface. You can interact with the game using the following commands:
-
-- **Uncover a cell**: Enter the row and column coordinates of the desired cell (e.g., `1 2`).
-- **Flag a cell**: Enter the row and column coordinates of the cell to flag, preceded by the flag symbol (e.g., `F 1 2`).
-- **Quit the game**: Enter `q` or `quit` to exit the game.
+Uncover a cell: Click on a cell to uncover it.
+Flag a cell: Right-click on a cell to flag it.
+Quit the game: Click on "File" and then select "Exit" to quit the game.
 
 
 ## License
 
-This Minesweeper game is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute the code for personal or commercial purposes.
+This Minesweeper game is licensed under the [MIT License](LICENSE).
