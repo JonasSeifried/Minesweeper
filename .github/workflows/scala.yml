@@ -34,7 +34,7 @@ jobs:
           distribution: 'corretto'
           cache: 'sbt'
       - name: Run Tests
-        run: sbt clean coverage test
+        run: sbt test
       - name: Upload Coverage Report
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
