@@ -27,8 +27,8 @@ class Tui(controller: ControllerInterface) extends Observer:
     else false
 
   def inputLoop(): Boolean =
-    val input = scala.io.StdIn.readLine.replaceAll(" ", "")
     if (!running) return false
+    val input = scala.io.StdIn.readLine.replaceAll(" ", "")
     if (processInput(input))
       if (controller.isPostGameState) return false
     if (input.isEmpty) return false
