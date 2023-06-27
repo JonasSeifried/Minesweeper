@@ -10,7 +10,6 @@ import de.htwg.se.minesweeper.model.fieldComponent.FieldInterface
 import de.htwg.se.minesweeper.model.fieldComponent.fieldAdvancedImpl.Field
 import de.htwg.se.minesweeper.model.fileIO.FileIOInterface
 import de.htwg.se.minesweeper.model.fileIO.fileIOXmlImpl.FileIO as FileIOXml
-import de.htwg.se.minesweeper.model.fileIO.fileIOBytesImpl.FileIO as FileIOBytes
 import de.htwg.se.minesweeper.model.fileIO.fileIOJsonImpl.FileIO as FileIOJson
 
 class MinesweeperModule extends AbstractModule with ScalaModule:
