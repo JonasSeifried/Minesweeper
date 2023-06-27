@@ -21,3 +21,4 @@ lazy val root = project
         jacocoCoverallsRepoToken := sys.env.get("COVERALLS_REPO_TOKEN")
 
   )
+  .enablePlugins(JacocoCoverallsPlugin)
